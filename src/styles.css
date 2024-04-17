@@ -1,0 +1,71 @@
+@import "ngx-toastr/toastr";
+
+:root {
+  --shadow-2: 0 16px 30px hsla(0, 0%, 0%, 0.25);
+  --border-gradient-onyx: linear-gradient(
+    to bottom right,
+    hsl(0, 0%, 25%) 0%,
+    hsla(0, 0%, 25%, 0) 50%
+  );
+}
+
+html,
+body {
+  height: 100%;
+  color: #000000 !important;
+}
+
+body {
+  background: #1d2125;
+}
+
+small,
+input,
+textarea,
+label {
+  font-size: 14px !important;
+  font-family: "Inter", sans-serif;
+}
+
+h5 {
+  font-weight: 700 !important;
+  color: rgba(0, 0, 0, 0.806);
+}
+
+h2 {
+  font-family: "Syne", sans-serif;
+}
+
+mat-label {
+  font-size: 13px;
+}
+
+.container-personalized {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.subtitle {
+  font-family: "Inter", sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  margin-left: 4px;
+}
+
+.mat-elevation-z8 {
+  overflow-x: auto;
+}
+
+.mat-mdc-menu-content {
+  display: flex !important;
+}
+
+.non-resizable-textarea {
+  resize: none;
+}
+
+.no-select {
+  pointer-events: none;
+  user-select: none;
+}

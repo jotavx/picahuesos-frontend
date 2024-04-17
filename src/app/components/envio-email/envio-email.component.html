@@ -1,0 +1,44 @@
+<app-navbar></app-navbar>
+<br><br><br><br><br>
+<div class="container-personalized mt-5">
+  <div class="subtitle mb-5">Enviar Email</div>
+  <div class="card">
+    <div class="card-body">
+      <form [formGroup]="datosCorreo">
+        <div *ngIf="loading" class="spinner-border text-light float-end mb-3" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <mat-form-field appearance="fill">
+          <mat-label>Lista destinatarios</mat-label>
+          <mat-select (selectionChange)="seleccionarDestinatarios($event.value)">
+            <mat-option disabled selected>Seleccionar destinatarios</mat-option>
+            <mat-option value="todos">Todos los alumnos</mat-option>
+            <mat-option value="mosquitos">Mosquitos</mat-option>
+            <mat-option value="PMM">PMM</mat-option>
+            <mat-option value="PreMini">PreMini</mat-option>
+            <mat-option value="Mini">Mini</mat-option>
+            <mat-option value="U13">U13</mat-option>
+            <mat-option value="U15">U15</mat-option>
+            <mat-option value="U17">U17</mat-option>
+            <mat-option value="Primera">Primera</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button mat-raised-button color="primary" class="ms-3 mb-3" (click)="abrirDialogoSeleccionAlumnos()">Elegir
+          destinatario</button>
+        <button class="btn btn-dark ms-3 mb-3" (click)="limpiarEmails()">Limpiar emails</button>
+        <br>
+        <label class="form-label mt-1 mb-2 fw-bold text-white">Emails</label>
+        <textarea type="text" class="form-control" placeholder="nombre@ejemplo.com" formControlName="correo"
+          [value]="listaCorreosSeleccionada" readonly></textarea>
+        <label class="form-label mt-1 mb-2 fw-bold text-white">Asunto</label>
+        <input type="text" class="form-control" placeholder="Título" formControlName="asunto">
+        <label class="form-label mt-1 mb-2 fw-bold text-white" mb-2>Mensaje</label>
+        <textarea class="form-control" rows="
+        10" formControlName="mensaje" placeholder="Mensaje"></textarea>
+      </form>
+      <button mat-raised-button color="primary" class=" float-end mt-2" (click)="  envioCorreo()">Enviar</button>
+      <button mat-raised-button color="accent" routerLink="/list-alumnos" class="float-end mx-2 mt-2">Volver</button>
+    </div>
+  </div>
+  <br><br><br>
+</div>

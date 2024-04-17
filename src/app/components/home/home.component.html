@@ -1,0 +1,42 @@
+<app-navbar></app-navbar>
+<div class="box-container mt-5">
+  <div class="subtitle">Recordatorios</div>
+  <button mat-stroked-button color="accent" (click)="openReminderDialog()" class="ms-2 mt-4 fw-bold"> <i
+      class="fa-solid fa-plus"></i> Nuevo
+    Recordatorio</button>
+  <div class="reminder-container">
+    <div *ngFor="let reminder of datosReminder" class="card-item">
+      <div class="card-body" *ngIf="reminder.isVisible">
+        <div class="d-flex panel-actions">
+          <button mat-raised-button (click)=" openReminderDialog(reminder)" class="btn mx-2">
+            <i class="fas fa-edit fa-lg" aria-label="edit"></i>
+          </button>
+          <button mat-raised-button (click)="openDeleteDialog(reminder.id)" class="btn">
+            <i class="fas fa-trash-alt fa-lg text-danger" aria-label="delete"></i>
+          </button>
+        </div>
+        <div class="panel-delete">
+          <button mat-stroked-button (click)="closeReminder(reminder.id)" class="btn-close">
+            <i class="fas fa-times fa-lg"></i>
+          </button>
+        </div>
+        <div class="dynamic-article flex-grow-1 no-select">
+          <div class="date-display">
+            <div class="day">{{ (reminder.reminderDate | formatDate).day }}</div>
+            <div class="month">{{ (reminder.reminderDate | formatDate).month }}</div>
+          </div>
+          <div class="data-container no-select">
+            <br>
+            <p class="dynamic-title">{{ reminder.reminderTitle }}</p>
+            <p class="dynamic-description">{{reminder.reminderDescription}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="subtitle mt-3">Alumnos</div>
+</div>
+
+
+<app-list-alumnos></app-list-alumnos>

@@ -1,0 +1,130 @@
+<div class="container-personalized mt-5">
+  <div class="card">
+    <div class="d-flex ">
+      <button mat-stroked-button color="primary" class=" mx-2 mt-3 panel fw-bold " (click)="
+        openCreateDialog()"><small><i class="fa-solid fa-plus"></i> Agregar
+          Alumno/a</small></button>
+      <button mat-stroked-button color="primary" class=" mx-2 mt-3 panel fw-bold" (click)="exportExcel()"><small><i
+            class="fa-solid fa-file-excel"></i> Exportar
+          Excel</small></button>
+    </div>
+    <div class="card-body">
+      <mat-form-field>
+        <mat-label class="no-select">Buscar</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="" #input>
+      </mat-form-field>
+      <mat-tab-group (selectedTabChange)="filtrarPorCategoria($event.tab.textLabel)" #tabGroup>
+        <mat-tab label="Mosquitos" value="Mosquitos"></mat-tab>
+        <mat-tab label="PMM" value="PMM"></mat-tab>
+        <mat-tab label="PreMini" value="PreMini"></mat-tab>
+        <mat-tab label="Mini" value="Mini"></mat-tab>
+        <mat-tab label="U13" value="U13"></mat-tab>
+        <mat-tab label="U15" value="U15"></mat-tab>
+        <mat-tab label="U17" value="U17"></mat-tab>
+        <mat-tab label="Primera" value="Primera"></mat-tab>
+      </mat-tab-group>
+
+      <div class="mat-elevation-z8">
+        <table mat-table id="table-data" class="table table-striped" [dataSource]="dataSource" matSort>
+
+          <ng-container matColumnDef="nombreCompleto" sticky>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre Completo </th>
+            <td mat-cell *matCellDef="let row">
+              <p class="name-center fw-bold"> <span
+                  matTooltip="Fecha de Creación: {{row.fechaCreacion.toDate() | date: 'dd/MM/yyyy'}} Última Actualización: {{row.fechaActualizacion.toDate() | date: 'dd/MM/yyyy'}}">
+                  <i class="fas fa-info-circle me-2" style="color: rgb(10, 118, 15); "></i>
+                </span> {{row.nombre}}</p>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="dni">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> DNI </th>
+            <td mat-cell *matCellDef="let row"> {{row.dni}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="fechaNacimiento">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de Nacimiento </th>
+            <td mat-cell *matCellDef="let row"> {{row.fechaNacimiento | date: 'dd/MM/yyyy'}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="categoria">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Categoría </th>
+            <td mat-cell *matCellDef="let row"> {{row.categoria}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="direccion">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Dirección </th>
+            <td mat-cell *matCellDef="let row"> {{row.direccion}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="seguroAltaBaja">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Seguro </th>
+            <td mat-cell *matCellDef="let row"> {{row.seguroAltaBaja}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="telefono">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Telefono </th>
+            <td mat-cell *matCellDef="let row"> {{row.telefono}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+            <td mat-cell *matCellDef="let row"> {{row.email}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="tutoresResponsables">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Tutores Responsables </th>
+            <td mat-cell *matCellDef="let row"> {{row.tutoresResponsables}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="observacionesAlumno">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Observaciones </th>
+            <td mat-cell *matCellDef="let row"> {{row.observacionesAlumno | slice:0:50}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="permisoImagen">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Permiso de imagen </th>
+            <td mat-cell *matCellDef="let row"> {{row.permisoImagen}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="seRetiraSolo">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Se retira solx </th>
+            <td mat-cell *matCellDef="let row"> {{row.seRetiraSolo}} </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="mesAbonado">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Mes Abonado </th>
+            <td mat-cell *matCellDef="let row" [style.color]="getColorForFechaAbonado(row.mesAbonado)" class="fw-bold">
+              {{ row.mesAbonado | date: 'dd/MM/yyyy' }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef> Acciones </th>
+            <td mat-cell *matCellDef="let row">
+              <button mat-button [matMenuTriggerFor]="menu"><mat-icon color="primary">menu</mat-icon></button>
+              <mat-menu #menu="matMenu">
+                <button matTooltip="Envio" mat-menu-item (click)="openEmailDialog(row.id)"><i
+                    class="fa-solid fa-paper-plane btn-panel"></i></button>
+                <button matTooltip="Editar" mat-menu-item (click)="openCreateDialog(row)"><i
+                    class="fas fa-edit fa-lg btn-panel text-primary "></i></button>
+                <button matTooltip="Borrar" mat-menu-item (click)="openDeleteDialog(row.id)"><i
+                    class="fas fa-trash-alt fa-lg text-danger btn-panel"></i></button>
+                <button matTooltip="Dar de baja" mat-menu-item (click)="moverAlumnoABajas(row.id)"><i
+                    class="fa-solid fa-arrow-down btn-panel"></i></button>
+              </mat-menu>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No hay datos que coincidan con el filtro:"{{input.value}}"</td>
+          </tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[10, 25, 100, 500]" aria-label="Select page of users"></mat-paginator>
+      </div>
+    </div>
+  </div>
+  <br><br><br><br>
+</div>

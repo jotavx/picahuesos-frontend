@@ -1,0 +1,11 @@
+<app-navbar></app-navbar>
+
+
+<H2>BAJAS </H2>
+<ul>
+  <li *ngFor="let bajas of bajasAlumnos">
+    {{ bajas.nombre }}
+    <button (click)="devolverAlumno(bajas.id)">Devolver a Alumnos</button>
+  </li>
+
+</ul>

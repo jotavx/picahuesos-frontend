@@ -1,0 +1,47 @@
+<div class="container">
+  <div class="row d-flex justify-content-center align-items-center h-100">
+    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+      <div class="card-body text-center">
+        <div class="mb-md-5 mt-md-4 pb-5">
+          <div class="card bg-dark text-white" style="border-radius: 1rem;">
+            <div class="card-body mt-5 text-center">
+              <h2 class="login-title">INICIA SESION</h2>
+              <form class=" mt-4 form-login" [formGroup]="formLogin" (ngSubmit)="onSubmit()">
+                <!-- <div class="mb-3">
+                  <input type="text" class="form-control" formControlName="email" placeholder="Ingrese email">
+                </div> -->
+                <!-- <div class="mb-3 d-flex">
+                  <input class="form-control" matInput [type]="hide ? 'password' : 'text'" formControlName="password"
+                    placeholder="Ingrese contraseña">
+                  <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="hide" type="button">
+                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  </button>
+                </div> -->
+                <mat-form-field class="full-width">
+                  <mat-label>Ingresa usuario</mat-label>
+                  <input matInput formControlName="email">
+                </mat-form-field>
+                <mat-form-field class="full-width">
+                  <mat-label>Ingresa contraseña</mat-label>
+                  <input matInput formControlName="password" [type]="hide ? 'password' : 'text'" class="w-100"
+                    formControlName="password">
+                  <button mat-icon-button matSuffix (click)=" hide=!hide" [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="hide" type="button">
+                    <mat-icon style="color: gray;">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  </button>
+                </mat-form-field>
+                <br>
+                <small *ngIf="loginError" class="text-danger">Usuario o contraseña
+                  incorrectos.</small>
+                <br>
+                <button mat-raised-button color="primary" type="submit" class="btn btn-primary mt-3">Iniciar
+                  Sesión</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

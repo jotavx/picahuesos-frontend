@@ -1,0 +1,159 @@
+<h2 mat-dialog-title class="text-center ">{{titulo}}</h2>
+<mat-dialog-content>
+  <small *ngIf="submitted && createAlumno.invalid" class="text-danger fw-bold text-uppercase">Faltan campos
+    obligatorios por completar ( * )</small>
+  <div *ngIf="loading" class="spinner-border float-end" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+  <form [formGroup]="createAlumno">
+    <div class="flex-row">
+      <div class="flex-column">
+        <h5 class="text-start mx-1 mt-1">Nombre Completo <small class="text-danger">*</small></h5>
+        <input type="text" class="form-control form-control-lg mt-1" formControlName="nombre"
+          [class.is-invalid]="nombreNoValido">
+        <small *ngIf="nombreNoValido" class="text-danger">Ingrese Nombre y Apellido</small>
+      </div>
+      <div class="flex-column">
+        <h5 class="text-start mx-1 mt-1">Fecha de Nacimiento <small class="text-danger">*</small></h5>
+        <input type="date" class="form-control form-control-lg mt-1" formControlName="fechaNacimiento"
+          [class.is-invalid]="fechaNoValido">
+        <small *ngIf="fechaNoValido" class="text-danger">Ingrese una fecha válida</small>
+      </div>
+    </div>
+    <div class="flex-row">
+      <div class="flex-column">
+        <h5 class="text-start mx-1 mt-1">Email <small class="text-danger">*</small></h5>
+        <input type="email" id="correo" class="form-control form-control-lg mt-1" formControlName="email"
+          [class.is-invalid]="emailNoValido">
+        <small *ngIf="emailNoValido" class="text-danger">Ingrese un email válido</small>
+      </div>
+      <div class="flex-column">
+        <h5 class="text-start mx-1 mt-1">Domicilio</h5>
+        <input type="text" class="form-control form-control-lg mt-1" formControlName="direccion">
+      </div>
+    </div>
+    <div class="flex-row">
+      <div class="flex-column">
+        <h5 class="text-start mx-1 mt-1">DNI <small class="text-danger">*</small></h5>
+        <input type="text" class="form-control form-control-lg mt-1" formControlName="dni"
+          [class.is-invalid]="dniNoValido">
+        <small *ngIf="dniNoValido" class="text-danger">DNI no válido, ingrese el DNI sin puntos ni
+          espacios</small>
+      </div>
+      <div class="flex-column">
+        <h5 class="text-start mx-1 mt-1 ">Mes Abonado<small class="text-danger">*</small></h5>
+        <input type="date" class="form-control form-control-lg mt-1 mes-abonado" formControlName="mesAbonado"><small
+          *ngIf="ingresarMesAbonado" class="text-danger">Ingrese una fecha</small>
+      </div>
+    </div>
+    <div class="flex-row">
+      <div class="flex-column">
+        <h5 class="text-start mx-1 mt-1">Teléfono <small class="text-danger">*</small></h5>
+        <input type="text" class="form-control form-control-lg mt-1" formControlName="telefono">
+      </div>
+      <div class="flex-column">
+        <h5 class="text-start mx-1 mt-1">Categoría <small class="text-danger">*</small></h5>
+        <select class="form-select" id="categoriaSelect" formControlName="categoria">
+          <option value="">Seleccione una categoría...</option>
+          <option *ngFor="let categoria of categorias" [value]="categoria">{{ categoria }}</option>
+        </select>
+      </div>
+      <div class="flex-column">
+        <h5 class="text-start mx-1 mt-1">Tutorxs Responsables</h5>
+        <input type="text" class="form-control form-control-lg mt-1" formControlName="tutoresResponsables">
+      </div>
+    </div>
+    <div class="flex-row">
+      <div class="flex-column">
+        <h5 class="text-start mx-1 mt-1">Seguro</h5>
+        <input type="text" class="form-control form-control-lg mt-1" formControlName="seguroAltaBaja">
+      </div>
+      <div class="flex-column">
+        <h5 class="text-start mx-1 mt-1">Permiso Imagen</h5>
+        <input type="text" class="form-control form-control-lg mt-1" formControlName="permisoImagen">
+      </div>
+      <div class="flex-column">
+        <h5 class="text-start mx-1 mt-1 ">Se retira solx</h5>
+        <input type="text" class="form-control form-control-lg mt-1" formControlName="seRetiraSolo">
+      </div>
+
+    </div>
+    <div class="flex-row">
+      <div class="flex-column">
+        <h5 class="text-start mx-1 mt-1">Observaciones</h5>
+        <textarea class="form-control non-resizable-textarea custom-width" rows="3"
+          formControlName="observacionesAlumno"></textarea>
+      </div>
+    </div>
+    <div class="accordion mt-3">
+      <div class="accordion-item">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+          aria-expanded="false" aria-controls="collapseOne">
+          <small class="fw-bold">Historial de Pagos</small>
+        </button>
+        <div id="collapseOne" class="accordion-collapse collapse">
+          <small class="medios-pago">(E): Efectivo | (MP)
+            Mercado
+            Pago</small>
+          <div class="accordion-body">
+            <div class="flex-column col-1">
+              <h5 class="text-start mx-1 mt-1 ">Inscripción</h5>
+              <input type="text" class="form-control form-control-lg mt-1 " formControlName="montoInsc" placeholder="$">
+            </div>
+            <div class="flex-row">
+              <div class="flex-column">
+                <h5 class="text-start mx-1 mt-1">Marzo</h5>
+                <input type="text" class="form-control form-control-lg mt-1" formControlName="mesMarzo" placeholder="$">
+              </div>
+              <div class="flex-column">
+                <h5 class="text-start mx-1 mt-1">Abril</h5>
+                <input type="text" class="form-control form-control-lg mt-1" formControlName="mesAbril" placeholder="$">
+              </div>
+              <div class="flex-column">
+                <h5 class="text-start mx-1 mt-1">Mayo</h5>
+                <input type="text" class="form-control form-control-lg mt-1" formControlName="mesMayo" placeholder="$">
+              </div>
+              <div class="flex-column">
+                <h5 class="text-start mx-1 mt-1">Junio</h5>
+                <input type="text" class="form-control form-control-lg mt-1" formControlName="mesJunio" placeholder="$">
+              </div>
+              <div class="flex-column">
+                <h5 class="text-start mx-1 mt-1">Julio</h5>
+                <input type="text" class="form-control form-control-lg mt-1" formControlName="mesJulio" placeholder="$">
+              </div>
+              <div class="flex-column">
+                <h5 class="text-start mx-1 mt-1">Agosto</h5>
+                <input type="text" class="form-control form-control-lg mt-1" formControlName="mesAgosto"
+                  placeholder="$">
+              </div>
+              <div class="flex-column">
+                <h5 class="text-start mx-1 mt-1">Septiembre</h5>
+                <input type="text" class="form-control form-control-lg mt-1" formControlName="mesSeptiembre"
+                  placeholder="$">
+              </div>
+              <div class="flex-column">
+                <h5 class="text-start mx-1 mt-1">Octubre</h5>
+                <input type="text" class="form-control form-control-lg mt-1" formControlName="mesOctubre"
+                  placeholder="$">
+              </div>
+              <div class="flex-column">
+                <h5 class="text-start mx-1 mt-1">Noviembre</h5>
+                <input type="text" class="form-control form-control-lg mt-1" formControlName="mesNoviembre"
+                  placeholder="$">
+              </div>
+              <div class="flex-column">
+                <h5 class="text-start mx-1 mt-1">Diciembre</h5>
+                <input type="text" class="form-control form-control-lg mt-1" formControlName="mesDiciembre"
+                  placeholder="$">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="accent" mat-dialog-close>Volver</button>
+  <button mat-raised-button color="primary" type="submit" class="" (click)="agregarEditarAlumno()">Aplicar</button>
+</mat-dialog-actions>

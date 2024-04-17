@@ -1,0 +1,23 @@
+.login-title {
+  font-family: "Syne", sans-serif;
+  font-size: 23px;
+}
+
+.card-body {
+  padding: 3rem;
+}
+
+.full-width {
+  width: 100%; /* Ajusta esto según tus necesidades */
+}
+
+@media (max-width: 576px) {
+  .container {
+    width: 100% !important;
+  }
+
+  .card-body {
+    margin-top: 50px;
+    padding: 25px;
+  }
+}

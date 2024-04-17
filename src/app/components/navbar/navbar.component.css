@@ -1,0 +1,18 @@
+.panel-buttons {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  background-color: #212529;
+}
+
+.panel.active {
+  background-color: rgb(133, 74, 49);
+}
+
+@media (max-width: 576px) {
+  .panel-buttons {
+    flex-direction: column;
+    width: 80%;
+    margin: 0 auto;
+  }
+}

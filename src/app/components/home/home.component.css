@@ -1,0 +1,142 @@
+.box-container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.reminder-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.card-item {
+  transition: transform 0.3s ease;
+  min-width: 30%;
+  max-width: 30%;
+  margin: 25px 10px;
+}
+
+.card-item:hover {
+  transform: translateY(-10px);
+}
+
+.card-body {
+  display: flex;
+  align-items: center;
+  background: var(--border-gradient-onyx);
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: var(--shadow-2);
+  min-height: 250px;
+  max-height: 250px;
+}
+
+.dynamic-article {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 12px 5%;
+}
+
+.dynamic-title {
+  font-size: 18px;
+  font-weight: bold;
+  padding: 5px 9.5%;
+  color: rgb(255, 0, 0);
+  line-height: 1.5;
+}
+
+.dynamic-description {
+  padding: 5px 10%;
+  line-height: 1.5;
+  margin-bottom: 15px;
+  font-size: 14px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  color: rgb(255, 255, 255);
+}
+
+.date-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
+  background-color: rgb(255, 68, 0);
+  border-radius: 100%;
+  padding: 8px 5%;
+}
+
+.data-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.day,
+.month {
+  margin: 0;
+  font-family: "Syne", sans-serif;
+  font-weight: bold;
+  color: white;
+}
+
+.panel-actions {
+  position: absolute;
+  left: 22px;
+  top: 0;
+  margin-top: 9px;
+  visibility: hidden;
+}
+
+.card-body:hover .panel-actions {
+  visibility: visible;
+}
+
+.panel-delete {
+  position: absolute;
+  right: 22px;
+  top: 0;
+  margin-top: 9px;
+  visibility: hidden;
+}
+
+.card-body:hover .panel-delete {
+  visibility: visible;
+}
+
+@media (max-width: 1200px) {
+  .card-body {
+    min-height: 300px;
+  }
+
+  .card-item {
+    min-width: 40%;
+  }
+}
+
+@media (max-width: 768px) {
+  .card-item {
+    min-width: 100%;
+    margin-top: 25px;
+  }
+  .card-body {
+    max-height: 158px;
+    min-height: 158px;
+  }
+}
+
+@media (max-width: 576px) {
+  .box-container {
+    width: 90%;
+    margin: 5px 5px;
+  }
+  .card-item {
+    min-width: 100%;
+    margin-top: 25px;
+  }
+  .card-body {
+    max-height: 158px;
+    min-height: 158px;
+  }
+}

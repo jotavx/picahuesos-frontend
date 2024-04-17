@@ -1,0 +1,32 @@
+<h2 mat-dialog-title class="text-center ">{{titulo}}</h2>
+<mat-dialog-content>
+  <div *ngIf="loading" class="spinner-border float-end" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+  <small *ngIf="submitted && createReminder.invalid" class="text-danger fw-bold text-uppercase">Faltan campos
+    obligatorios por completar ( * )</small>
+
+  <form [formGroup]="createReminder">
+    <label class="form-label mt-2 "><small class="fw-bold ">Título</small> <small class="text-danger">*</small></label>
+    <input type="text" class="form-control" placeholder="Ingrese un título" formControlName="reminderTitle">
+    <label class="form-label mt-2 "><small class="fw-bold ">Fecha</small> <small class="text-danger">*</small></label>
+    <input type="date" class="form-control" placeholder="Ingrese una fecha " formControlName="reminderDate">
+    <label class="form-label mt-2 "><small class="fw-bold ">Descripción</small> <small
+        class="text-danger">*</small></label>
+    <textarea class="form-control non-resizable-textarea" maxlength="90" rows="
+        5" placeholder="Ingrese una descripción" formControlName="reminderDescription">
+      </textarea>
+    <div class="descripcionControl float-end">
+      {{ createReminder.get('reminderDescription')?.value?.length ?? 0 }} / 90
+    </div>
+    <!-- <br><br>
+    <button mat-raised-button color="primary" type=" submit" class="float-end mt-2 "
+      (click)="buildOrEditReminder()">Aceptar</button>
+    <button mat-raised-button color="accent" class=" float-end mx-2 mt-2" (click)="closeDialog()">Volver</button> -->
+  </form>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="accent" mat-dialog-close="">Volver</button>
+  <button mat-raised-button color="primary" type=" submit" (click)="buildOrEditReminder()">Aceptar</button>
+</mat-dialog-actions>

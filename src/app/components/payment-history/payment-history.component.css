@@ -1,0 +1,13 @@
+.card {
+  background-color: #ffffff;
+}
+
+td,
+th {
+  width: 35%;
+  border-right: 1px solid #ddd !important;
+}
+
+.container {
+  color: white !important;
+}

@@ -1,0 +1,22 @@
+<nav class="navbar navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand ms-3" href="#">App Alumnos</a>
+    <button mat-raised-button color="warn" (click)="openDialog()" class=" float-end mx-2 fw-bold">Cerrar Sesión</button>
+  </div>
+</nav>
+<div class="panel-buttons p-2">
+  <button mat-stroked-button color="accent" class="mt-2 mx-2 panel fw-bold" routerLink="/home"
+    routerLinkActive="active"><small><i class="fa-solid fa-house"></i>
+      Inicio</small></button>
+  <button mat-stroked-button color="accent" class="mt-2 mx-2 panel fw-bold" routerLink="/envio-email"
+    routerLinkActive="active"><small><i class="fa-solid fa-envelope"></i> Envio de
+      Email</small></button>
+  <button mat-stroked-button color="accent" class="mt-2 mx-2 panel fw-bold" routerLink="/historial-pagos"
+    routerLinkActive="active"><small><i class="fa-solid fa-landmark"></i> Historial
+      de
+      pagos</small></button>
+  <button mat-stroked-button color="accent" class="mt-2 mx-2 panel fw-bold" routerLink="/cierre-de-caja"
+    routerLinkActive="active"><small><i class="fa-solid fa-coins"></i> Cierre de caja</small></button>
+  <button mat-stroked-button color="accent" class="mt-2 mx-2 panel fw-bold" routerLink="/bajas"
+    routerLinkActive="active"><small><i class="fa-solid fa-arrow-trend-down"></i> Bajas</small></button>
+</div>

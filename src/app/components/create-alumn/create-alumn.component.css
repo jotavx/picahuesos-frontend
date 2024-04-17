@@ -1,0 +1,39 @@
+.flex-row {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.flex-column {
+  flex: 1;
+  padding: 0 10px;
+  min-width: 200px;
+}
+
+.accordion-button:not(.collapsed) {
+  color: #fff;
+  background-color: #313030;
+}
+
+.mes-abonado {
+  border: 1px solid green;
+}
+
+.medios-pago {
+  font-size: 10px !important;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 10px;
+}
+
+.custom-width {
+  width: 100%;
+}
+
+@media (min-width: 577px) {
+  .custom-width {
+    width: 50%;
+  }
+}
