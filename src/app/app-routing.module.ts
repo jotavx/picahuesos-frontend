@@ -9,9 +9,6 @@ import { CierreDeCajaComponent } from './components/cierre-de-caja/cierre-de-caj
 import { BajasComponent } from './components/bajas/bajas.component';
 
 const routes: Routes = [
-  //Para cambiar redireccion al ingresar al url modificar el siguiente path
-  { path: '', redirectTo: 'list-alumnos', pathMatch: 'full' },
-
   { path: 'login', component: LoginComponent },
 
   {
@@ -39,7 +36,7 @@ const routes: Routes = [
     component: BajasComponent,
     ...canActivate(() => redirectUnauthorizedTo(['/login'])),
   },
-  { path: '**', redirectTo: 'home', pathMatch: 'full' },
+  { path: '**', redirectTo: 'login', pathMatch: 'full' },
 ];
 
 @NgModule({

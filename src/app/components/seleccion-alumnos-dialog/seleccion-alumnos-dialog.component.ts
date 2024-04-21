@@ -74,6 +74,7 @@ export class SeleccionAlumnosDialogComponent implements OnInit {
     });
   }
 
+  //Añade o elimina un alumno de la lista de seleccionados basado en la acción del usuario en la interfaz.
   seleccionarAlumno(event: any, alumno: any) {
     if (event.checked) {
       // Agregar alumno a la lista de seleccionados si está marcado
@@ -89,6 +90,7 @@ export class SeleccionAlumnosDialogComponent implements OnInit {
     }
   }
 
+  //Concatena los correos de los alumnos seleccionados y envía esta lista al cerrar el diálogo.
   aplicarSeleccion() {
     this.dialogRef.close(this.alumnosSeleccionados);
   }
@@ -97,6 +99,7 @@ export class SeleccionAlumnosDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  ////Concatena los correos de los alumnos seleccionados y envía esta lista al cerrar el diálogo.
   agregarCorreos() {
     const correosAlumnosSeleccionados = this.alumnosSeleccionados.map(
       (alumno) => alumno.email
@@ -106,6 +109,7 @@ export class SeleccionAlumnosDialogComponent implements OnInit {
     this.aplicarSeleccion();
   }
 
+  //Calcula y retorna un color basado en cuánto tiempo ha pasado desde una fecha dada, utilizada para resaltar visualmente esta información en la interfaz.
   getColorForFechaAbonado(fechaAbonado: Date): string {
     const hoy = new Date();
     const fechaAbonadoPlus30Days = new Date(fechaAbonado);

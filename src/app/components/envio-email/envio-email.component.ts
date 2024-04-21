@@ -15,8 +15,9 @@ import { UserService } from 'src/services/user.service';
   providers: [UserService],
 })
 export class EnvioEmailComponent {
-  listaCorreosSeleccionada: string = '';
+  listaCorreosSeleccionada: string = ''; //Almacena los correos seleccionados actualmente para enviar mensajes.
 
+  // Almacenan correos agrupados por categorías de alumnos.
   listaCorreosMosquitos: string = '';
   listaCorreosPMM: string = '';
   listaCorreosPreMini: string = '';
@@ -25,12 +26,11 @@ export class EnvioEmailComponent {
   listaCorreosU15: string = '';
   listaCorreosU17: string = '';
   listaCorreosPrimera: string = '';
-
   listaCorreos: string = '';
 
-  alumnos: any[] = [];
-  datosCorreo: FormGroup;
-  loading = false;
+  alumnos: any[] = []; // Array para almacenar datos de alumnos.
+  datosCorreo: FormGroup; //Define un formulario reactivo con validaciones para correo, asunto, y mensaje.
+  loading = false; //Indicador de carga
 
   constructor(
     private _alumnoService: AlumnoService,
@@ -48,9 +48,10 @@ export class EnvioEmailComponent {
   }
 
   ngOnInit(): void {
-    this.getCorreos();
+    this.getCorreos(); //Llama al método para obtener la lista inicial de correos.
   }
 
+  //Consulta los datos de alumnos, agrupándolos y generando listas de correos por categorías mediante filtros y mapeos sobre el conjunto de datos.
   getCorreos() {
     this._alumnoService.getAlumnos().subscribe((data) => {
       this.alumnos = [];
@@ -119,6 +120,7 @@ export class EnvioEmailComponent {
     });
   }
 
+  // Actualiza listaCorreosSeleccionada basado en la categoría seleccionada por el usuario.
   seleccionarDestinatarios(opcion: string) {
     if (opcion === 'todos') {
       this.listaCorreosSeleccionada = this.listaCorreos;
@@ -141,6 +143,7 @@ export class EnvioEmailComponent {
     }
   }
 
+  //Valida el formulario y, si es válido, envía un correo con los detalles proporcionados.
   envioCorreo() {
     if (this.datosCorreo.invalid) {
       this.toastr.error('Todos los campos son obligatorios', 'Error', {
@@ -182,6 +185,7 @@ export class EnvioEmailComponent {
     );
   }
 
+  //Abre un diálogo para seleccionar alumnos específicos, y actualiza la lista de correos seleccionados una vez que el diálogo se cierra.
   abrirDialogoSeleccionAlumnos(): void {
     const dialogRef = this.dialog.open(SeleccionAlumnosDialogComponent, {
       width: '1200px',
@@ -189,8 +193,6 @@ export class EnvioEmailComponent {
 
     dialogRef.afterClosed().subscribe((alumnosSeleccionados: any[]) => {
       if (alumnosSeleccionados && alumnosSeleccionados.length > 0) {
-        // Aquí puedes manejar los alumnos seleccionados
-        // Por ejemplo, puedes almacenar sus correos en listaCorreosSeleccionada
         this.listaCorreosSeleccionada = alumnosSeleccionados
           .map((alumno) => alumno.email)
           .join(', ');
@@ -198,6 +200,7 @@ export class EnvioEmailComponent {
     });
   }
 
+  // Limpia el campo de correo en el formulario.
   limpiarEmails() {
     this.datosCorreo.get('correo')?.setValue('');
   }

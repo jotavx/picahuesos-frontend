@@ -27,9 +27,9 @@ export class CreateAlumnComponent implements OnInit {
     'U15',
     'U17',
     'Primera',
-  ];
-  titulo = 'Agregar Alumno/a';
-  createAlumno: FormGroup;
+  ]; //Define las categorías existentes para su selección en el formulario
+  titulo = 'Agregar Alumno/a'; // Define un titulo para que sea dinámico, si es editar el titulo sera otro
+  createAlumno: FormGroup; //FormGroup que representa el formulario para crear o editar un alumno.
   submitted = false;
   loading = false;
   id: string | null;
@@ -131,6 +131,7 @@ export class CreateAlumnComponent implements OnInit {
     return null;
   }
 
+  //Valida el formulario y llama a agregar o editar alumno según sea necesario.
   agregarEditarAlumno() {
     this.submitted = true;
 
@@ -145,6 +146,7 @@ export class CreateAlumnComponent implements OnInit {
     }
   }
 
+  //Métodos para comunicarse con el servicio alumnoService para agregar o actualizar datos en la base de datos.
   agregarAlumno() {
     const alumno: any = {
       nombre: this.createAlumno.value.nombre,
@@ -264,6 +266,7 @@ export class CreateAlumnComponent implements OnInit {
     }
   }
 
+  //Evita que el formulario se envíe accidentalmente al presionar Enter.
   onKeydown(event: KeyboardEvent) {
     if (event.key === 'Enter') {
       event.preventDefault();

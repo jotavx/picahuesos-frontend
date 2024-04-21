@@ -45,6 +45,7 @@ import { MainContainerComponent } from './components/layout/main-container/main-
 import { PaymentHistoryComponent } from './components/payment-history/payment-history.component';
 import { CierreDeCajaComponent } from './components/cierre-de-caja/cierre-de-caja.component';
 import { BajasComponent } from './components/bajas/bajas.component';
+import { ConfirmBajaDialogComponent } from './components/confirm-baja-dialog/confirm-baja-dialog.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { BajasComponent } from './components/bajas/bajas.component';
     PaymentHistoryComponent,
     CierreDeCajaComponent,
     BajasComponent,
+    ConfirmBajaDialogComponent,
   ],
   imports: [
     BrowserModule,

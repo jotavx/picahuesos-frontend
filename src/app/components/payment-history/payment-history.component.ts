@@ -56,18 +56,6 @@ export class PaymentHistoryComponent implements OnInit {
     }
   }
 
-  getAlumnos() {
-    this._alumnoService.getAlumnos().subscribe((data) => {
-      this.alumnos = [];
-      data.forEach((element: any) => {
-        this.alumnos.push({
-          id: element.payload.doc.id,
-          ...element.payload.doc.data(),
-        });
-      });
-    });
-  }
-
   filtrarPorCategoria(categoria: string): void {
     this.selectedCategory = categoria;
     sessionStorage.setItem('selectedCategory', categoria);

@@ -11,8 +11,8 @@ import { Reminder } from '../models/reminder.model';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  isVisible = true;
-  datosReminder: any = [];
+  isVisible = true; //booleano utilizado para controlar la visibilidad de los recordatorios
+  datosReminder: any = []; //arreglo para almacenar los datos de los recordatorios recibidos del servicio
   constructor(
     public dialog: MatDialog,
     private reminderService: ReminderService
@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit {
     this.getReminderData();
   }
 
+  //Este método obtiene los datos de los recordatorios desde el servicio y los transforma para ser utilizados en el componente, asegurando que cada recordatorio tenga un ID y una propiedad isVisible.
   getReminderData() {
     this.reminderService.getData().subscribe((data) => {
       this.datosReminder = data.map((element: any) => ({
@@ -32,6 +33,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  //  Elimina un recordatorio específico utilizando su ID y luego vuelve a cargar los datos.
   deleteContent(id: string): void {
     this.reminderService
       .deleteContent(id)
@@ -44,6 +46,7 @@ export class HomeComponent implements OnInit {
       });
   }
 
+  //Abre un diálogo modal para editar o añadir un recordatorio. Si se pasa content, se utilizará para la edición.
   openReminderDialog(content?: any): void {
     const dialogRef = this.dialog.open(ReminderDialogComponent, {
       width: '900px',
@@ -51,6 +54,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  //Abre un diálogo de confirmación antes de proceder a eliminar un recordatorio. Si el resultado es 'confirm', se elimina el recordatorio.
   openDeleteDialog(id: string): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '450px',
@@ -62,6 +66,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  //Cambia la visibilidad de un recordatorio en la UI sin eliminarlo del almacenamiento, estableciendo isVisible a false.
   closeReminder(id: string): void {
     this.datosReminder = this.datosReminder.map((r: Reminder) => {
       if (r.id === id) {

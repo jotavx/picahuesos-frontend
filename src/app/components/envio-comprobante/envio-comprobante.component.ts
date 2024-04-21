@@ -10,9 +10,11 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./envio-comprobante.component.css'],
 })
 export class EnvioComprobanteComponent implements OnInit {
+  // Variables para almacenar información del alumno y el monto de inscripción.
   alumnoNombre: string = '';
   alumnoEmail: string = '';
   inscripcion: number = 0;
+  //Array que contiene los meses del año para los que se puede registrar un pago.
   meses = [
     'Marzo',
     'Abril',
@@ -25,9 +27,9 @@ export class EnvioComprobanteComponent implements OnInit {
     'Noviembre',
     'Diciembre',
   ];
-  valoresMes: { [mes: string]: number } = {};
-  mesesSeleccionados: { [mes: string]: boolean } = {};
-  incluyeInscripcion: boolean = false;
+  valoresMes: { [mes: string]: number } = {}; //Un objeto que mapea cada mes a un valor numérico de pago.
+  mesesSeleccionados: { [mes: string]: boolean } = {}; // Un objeto para rastrear qué meses han sido seleccionados para el pago.
+  incluyeInscripcion: boolean = false; //Booleano para saber si se incluye el pago de la inscripción en el comprobante.
 
   constructor(
     private alumnoService: AlumnoService,
@@ -38,6 +40,8 @@ export class EnvioComprobanteComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Realiza una llamada al servicio AlumnoService para obtener los datos del alumno. Se suscribe a la respuesta y maneja los datos del alumno, ajustando los estados valoresMes y mesesSeleccionados
+
     this.alumnoService.getAlumno(this.data.id).subscribe((resultado) => {
       const alumno = resultado.payload.data();
       this.alumnoNombre = alumno.nombre;
@@ -51,7 +55,6 @@ export class EnvioComprobanteComponent implements OnInit {
   }
 
   enviarCorreoComprobante() {
-    /////////////////////////////////////////////////////////////////////////////////////////NUEVO
     // Bandera para controlar si todos los meses seleccionados tienen monto
     let todosLosMontosValidos = true;
 
@@ -83,8 +86,7 @@ export class EnvioComprobanteComponent implements OnInit {
       );
       return;
     }
-    /////////////////////////////////////////////////////////////////////////////////////////NUEVO
-
+    // Crea un mensaje de correo electrónico listando todos los pagos registrados por mes y para la inscripción, si corresponde.
     const email = this.alumnoEmail;
     let mensaje = 'Hola Alumnx! \n\n';
 
@@ -107,6 +109,7 @@ export class EnvioComprobanteComponent implements OnInit {
       mensaje: mensaje,
     };
 
+    //Utiliza UserService para enviar el correo electrónico, suscribiéndose al resultado y mostrando una notificación de éxito o error según el caso
     this.userService.enviarCorreo(correoParams).subscribe(
       (resp) => {
         if (resp && resp.ok === true) {
@@ -138,5 +141,6 @@ export class EnvioComprobanteComponent implements OnInit {
       }
     );
     this.dialogRef.close();
+    //Finalmente, cierra el diálogo una vez que el correo es enviado o si se encuentra un error.
   }
 }

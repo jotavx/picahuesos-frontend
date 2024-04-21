@@ -9,6 +9,7 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
 import * as XLSX from 'xlsx';
 import { CreateAlumnComponent } from '../create-alumn/create-alumn.component';
 import { EnvioComprobanteComponent } from '../envio-comprobante/envio-comprobante.component';
+import { ConfirmBajaDialogComponent } from '../confirm-baja-dialog/confirm-baja-dialog.component';
 
 @Component({
   selector: 'app-list-alumnos',
@@ -16,26 +17,26 @@ import { EnvioComprobanteComponent } from '../envio-comprobante/envio-comprobant
   styleUrls: ['./list-alumnos.component.css'],
 })
 export class ListAlumnosComponent implements OnInit {
-  selectedCategory: string = 'Mosquitos';
-  fileName = 'ExcelSheet.xlsx';
-  alumnos: any[] = [];
+  selectedCategory: string = 'Mosquitos'; // para filtrar alumnos por categoría.
+  fileName = 'ExcelSheet.xlsx'; // es el nombre del archivo Excel a exportar.
+  alumnos: any[] = []; //es un array que almacena la información de los alumnos recibida del servicio.
   displayedColumns: string[] = [
     'nombreCompleto',
     'dni',
     'fechaNacimiento',
-    'categoria',
+    // 'categoria',
     'direccion',
     'email',
     'seguroAltaBaja',
     'telefono',
     'tutoresResponsables',
-    'observacionesAlumno',
+    // 'observacionesAlumno',
     'permisoImagen',
     'seRetiraSolo',
     'mesAbonado',
     'acciones',
-  ];
-  dataSource = new MatTableDataSource<any>();
+  ]; //array que define las columnas a mostrar en la tabla.
+  dataSource = new MatTableDataSource<any>(); // instancia de MatTableDataSource para manejar los datos de la tabla de forma reactiva.
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -46,17 +47,16 @@ export class ListAlumnosComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // this.selectedCategory = 'Mosquitos';
-    // this.filtrarPorCategoria(this.selectedCategory);
-
-    this.filtrarPorCategoria('Mosquitos');
+    this.filtrarPorCategoria('Mosquitos'); //aquí se filtra inicialmente por la categoría 'Mosquitos'.
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    // se ejecuta después de que la vista del componente se haya inicializado completamente, aquí se asignan el paginador y la ordenación a dataSource
   }
 
+  //filtra los datos de la tabla según el texto ingresado por el usuario.
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -66,6 +66,7 @@ export class ListAlumnosComponent implements OnInit {
     }
   }
 
+  //exporta los datos de la tabla a un archivo Excel.
   exportExcel() {
     let data = document.getElementById('table-data');
     const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(data);
@@ -76,6 +77,7 @@ export class ListAlumnosComponent implements OnInit {
     XLSX.writeFile(wb, this.fileName);
   }
 
+  //determina el color basado en si la fecha de abono ha pasado 30 días o no.
   getColorForFechaAbonado(fechaAbonado: Date): string {
     const hoy = new Date();
     const fechaAbonadoPlus30Days = new Date(fechaAbonado);
@@ -88,9 +90,10 @@ export class ListAlumnosComponent implements OnInit {
     }
   }
 
+  //actualiza selectedCategory y carga los alumnos de esa categoría desde AlumnoService
   filtrarPorCategoria(categoria: string): void {
     this.selectedCategory = categoria;
-    sessionStorage.setItem('selectedCategory', categoria);
+    // sessionStorage.setItem('selectedCategory', categoria);
     this._alumnoService.getAlumnosPorCategoria(categoria).subscribe((data) => {
       this.alumnos = [];
       data.forEach((element: any) => {
@@ -103,6 +106,7 @@ export class ListAlumnosComponent implements OnInit {
     });
   }
 
+  //abre un diálogo de confirmación para eliminar un alumno.
   openDeleteDialog(alumnoId: string): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '450px',
@@ -114,19 +118,18 @@ export class ListAlumnosComponent implements OnInit {
     });
   }
 
-  // getAlumnos() {
-  //   this._alumnoService.getAlumnos().subscribe((data) => {
-  //     this.alumnos = [];
-  //     data.forEach((element: any) => {
-  //       this.alumnos.push({
-  //         id: element.payload.doc.id,
-  //         ...element.payload.doc.data(),
-  //       });
-  //     });
-  //     this.dataSource.data = this.alumnos;
-  //   });
-  // }
+  openBajaDialog(alumnoId: string): void {
+    const dialogRef = this.dialog.open(ConfirmBajaDialogComponent, {
+      width: '450px',
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'confirm') {
+        this.moverAlumnoABajas(alumnoId);
+      }
+    });
+  }
 
+  //elimina un alumno usando AlumnoService.
   eliminarAlumno(id: string) {
     this._alumnoService
       .eliminarAlumno(id)
@@ -142,6 +145,7 @@ export class ListAlumnosComponent implements OnInit {
       });
   }
 
+  //abre un diálogo para crear o editar un alumno.
   openCreateDialog(row?: any): void {
     const dialogRef = this.dialog.open(CreateAlumnComponent, {
       width: '1200px',
@@ -153,6 +157,7 @@ export class ListAlumnosComponent implements OnInit {
     });
   }
 
+  //abre un diálogo para enviar un comprobante por correo electrónico.
   openEmailDialog(id: string) {
     this.dialog.open(EnvioComprobanteComponent, {
       data: {
@@ -161,24 +166,21 @@ export class ListAlumnosComponent implements OnInit {
     });
   }
 
+  //mueve un alumno a la sección de bajas y muestra una notificación correspondiente.
   moverAlumnoABajas(id: string) {
     this._alumnoService
       .moverAlumnoABajas(id)
       .then(() =>
         this.toastr.success(
-          'Puede visualizarlo en la sección de bajas',
-          'El registro se ha movido correctamente',
+          'Puede visualizar el registro en la sección de bajas',
+          'Acción realizada',
           { positionClass: 'toast-bottom-right' }
         )
       )
       .catch((error) =>
-        this.toastr.error(
-          'El registro no se ha movido',
-          'Se ha producido un error',
-          {
-            positionClass: 'toast-bottom-right',
-          }
-        )
+        this.toastr.error('Acción fallida', 'Se ha producido un error', {
+          positionClass: 'toast-bottom-right',
+        })
       );
   }
 }
