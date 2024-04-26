@@ -12,11 +12,11 @@
 html,
 body {
   height: 100%;
-  color: #000000 !important;
 }
 
 body {
-  background: #1d2125;
+  /* background: #1d2125; */
+  background-image: url("https://images.unsplash.com/photo-1548266652-99cf27701ced?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
 }
 
 small,
@@ -29,7 +29,6 @@ label {
 
 h5 {
   font-weight: 700 !important;
-  color: rgba(0, 0, 0, 0.806);
 }
 
 h2 {
@@ -40,6 +39,31 @@ mat-label {
   font-size: 13px;
 }
 
+i {
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+}
+
+td,
+th {
+  width: 8.33%;
+  border-right: 1px solid #ddd !important;
+}
+
+mat-cell,
+mat-header-cell,
+mat-footer-cell {
+  justify-content: center;
+}
+
+.mat-mdc-form-field {
+  font-size: 16px;
+  width: 100%;
+}
+
 .custom-container {
   width: 90%;
   margin: 0 auto;
@@ -47,7 +71,8 @@ mat-label {
 
 .subtitle {
   font-family: "Inter", sans-serif;
-  font-size: 24px;
+  text-transform: uppercase;
+  font-size: 25px;
   font-weight: bold;
   color: white;
   margin-left: 4px;
@@ -68,4 +93,17 @@ mat-label {
 .no-select {
   pointer-events: none;
   user-select: none;
+}
+
+.custom-button {
+  border-color: #303030; /* Color del borde */
+  background-color: #333333; /* Color de fondo */
+}
+
+.custom-button:hover {
+  background-color: #202ecb48; /* Color de fondo al pasar el mouse */
+}
+
+input::placeholder {
+  font-size: 12px;
 }

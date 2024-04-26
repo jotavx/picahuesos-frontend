@@ -10,6 +10,7 @@ import * as XLSX from 'xlsx';
 import { CreateAlumnComponent } from '../create-alumn/create-alumn.component';
 import { EnvioComprobanteComponent } from '../envio-comprobante/envio-comprobante.component';
 import { ConfirmBajaDialogComponent } from '../confirm-baja-dialog/confirm-baja-dialog.component';
+import { EnvioEmailDialogComponent } from '../envio-email-dialog/envio-email-dialog.component';
 
 @Component({
   selector: 'app-list-alumnos',
@@ -182,5 +183,11 @@ export class ListAlumnosComponent implements OnInit {
           positionClass: 'toast-bottom-right',
         })
       );
+  }
+
+  openEnvioEmail() {
+    const dialogRef = this.dialog.open(EnvioEmailDialogComponent, {
+      width: '1200px',
+    });
   }
 }

@@ -8,7 +8,7 @@
   <form [formGroup]="createAlumno">
     <div class="flex-row">
       <div class="flex-column">
-        <h5 class="text-start mx-1 mt-1">Nombre Completo <small class="text-danger">*</small></h5>
+        <h5 class="text-start mx-1 mt-1">Nombre y Apellido <small class="text-danger">*</small></h5>
         <input type="text" class="form-control form-control-lg mt-1" formControlName="nombre"
           [class.is-invalid]="nombreNoValido">
         <small *ngIf="nombreNoValido" class="text-danger">Ingrese Nombre y Apellido</small>
@@ -98,53 +98,59 @@
           <div class="accordion-body">
             <div class="flex-column col-1">
               <h5 class="text-start mx-1 mt-1 ">Inscripción</h5>
-              <input type="text" class="form-control form-control-lg mt-1 " formControlName="montoInsc" placeholder="$">
+              <input type="text" class="form-control form-control-lg mt-1 " formControlName="montoInsc"
+                placeholder="$0.000 (MP) | (E)">
             </div>
             <div class="flex-row">
               <div class="flex-column">
                 <h5 class="text-start mx-1 mt-1">Marzo</h5>
-                <input type="text" class="form-control form-control-lg mt-1" formControlName="mesMarzo" placeholder="$">
+                <input type="text" class="form-control form-control-lg mt-1" formControlName="mesMarzo"
+                  placeholder="$0.000 (MP) | (E)">
               </div>
               <div class="flex-column">
                 <h5 class="text-start mx-1 mt-1">Abril</h5>
-                <input type="text" class="form-control form-control-lg mt-1" formControlName="mesAbril" placeholder="$">
+                <input type="text" class="form-control form-control-lg mt-1" formControlName="mesAbril"
+                  placeholder="$0.000 (MP) | (E)">
               </div>
               <div class="flex-column">
                 <h5 class="text-start mx-1 mt-1">Mayo</h5>
-                <input type="text" class="form-control form-control-lg mt-1" formControlName="mesMayo" placeholder="$">
+                <input type="text" class="form-control form-control-lg mt-1" formControlName="mesMayo"
+                  placeholder="$0.000 (MP) | (E)">
               </div>
               <div class="flex-column">
                 <h5 class="text-start mx-1 mt-1">Junio</h5>
-                <input type="text" class="form-control form-control-lg mt-1" formControlName="mesJunio" placeholder="$">
+                <input type="text" class="form-control form-control-lg mt-1" formControlName="mesJunio"
+                  placeholder="$0.000 (MP) | (E)">
               </div>
               <div class="flex-column">
                 <h5 class="text-start mx-1 mt-1">Julio</h5>
-                <input type="text" class="form-control form-control-lg mt-1" formControlName="mesJulio" placeholder="$">
+                <input type="text" class="form-control form-control-lg mt-1" formControlName="mesJulio"
+                  placeholder="$0.000 (MP) | (E)">
               </div>
               <div class="flex-column">
                 <h5 class="text-start mx-1 mt-1">Agosto</h5>
                 <input type="text" class="form-control form-control-lg mt-1" formControlName="mesAgosto"
-                  placeholder="$">
+                  placeholder="$0.000 (MP) | (E)">
               </div>
               <div class="flex-column">
                 <h5 class="text-start mx-1 mt-1">Septiembre</h5>
                 <input type="text" class="form-control form-control-lg mt-1" formControlName="mesSeptiembre"
-                  placeholder="$">
+                  placeholder="$0.000 (MP) | (E)">
               </div>
               <div class="flex-column">
                 <h5 class="text-start mx-1 mt-1">Octubre</h5>
                 <input type="text" class="form-control form-control-lg mt-1" formControlName="mesOctubre"
-                  placeholder="$">
+                  placeholder="$0.000 (MP) | (E)">
               </div>
               <div class="flex-column">
                 <h5 class="text-start mx-1 mt-1">Noviembre</h5>
                 <input type="text" class="form-control form-control-lg mt-1" formControlName="mesNoviembre"
-                  placeholder="$">
+                  placeholder="$0.000 (MP) | (E)">
               </div>
               <div class="flex-column">
                 <h5 class="text-start mx-1 mt-1">Diciembre</h5>
                 <input type="text" class="form-control form-control-lg mt-1" formControlName="mesDiciembre"
-                  placeholder="$">
+                  placeholder="$0.000 (MP) | (E)">
               </div>
             </div>
           </div>

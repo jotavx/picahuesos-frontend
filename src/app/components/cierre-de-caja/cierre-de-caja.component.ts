@@ -1,14 +1,16 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
 import { AlumnoService } from 'src/services/alumno.service';
 
 @Component({
   selector: 'app-cierre-de-caja',
   templateUrl: './cierre-de-caja.component.html',
   styleUrls: ['./cierre-de-caja.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CierreDeCajaComponent implements OnInit {
-  alumnos: any[] = []; //Array para almacenar los datos de los alumnos.
+  dataSource = new MatTableDataSource<any>();
+  displayedColumns: string[] = ['categoria', 'totalMP', 'totalE'];
+  alumnos: any[] = [];
   categorias = [
     'Mosquitos',
     'PMM',
@@ -18,20 +20,31 @@ export class CierreDeCajaComponent implements OnInit {
     'U15',
     'U17',
     'Primera',
-  ]; //Array de categorías deportivas.
-
-  // Arrays para almacenar los totales por categoría y los totales generales de los ingresos de los meses
-  mesMarzo: { categoria: string; totalMP: number; totalE: number }[] = [];
-  totalGeneralMarzo = 0;
-  mesAbril: { categoria: string; totalMP: number; totalE: number }[] = [];
-  totalGeneralAbril = 0;
-  mesMayo: { categoria: string; totalMP: number; totalE: number }[] = [];
-  totalGeneralMayo = 0;
+  ];
+  meses = [
+    { clave: 'mesMarzo', nombre: 'Marzo', num: 3 },
+    { clave: 'mesAbril', nombre: 'Abril', num: 4 },
+    { clave: 'mesMayo', nombre: 'Mayo', num: 5 },
+    { clave: 'mesJunio', nombre: 'Junio', num: 6 },
+    { clave: 'mesJulio', nombre: 'Julio', num: 7 },
+    { clave: 'mesAgosto', nombre: 'Agosto', num: 8 },
+    { clave: 'mesSeptiembre', nombre: 'Septiembre', num: 9 },
+    { clave: 'mesOctubre', nombre: 'Octubre', num: 10 },
+    { clave: 'mesNoviembre', nombre: 'Noviembre', num: 11 },
+    { clave: 'mesDiciembre', nombre: 'Diciembre', num: 12 },
+  ];
+  datosMensuales: {
+    [key: string]: {
+      categorias: { categoria: string; totalMP: number; totalE: number }[];
+      totalGeneral: number;
+    };
+  } = {};
 
   constructor(private _alumnoService: AlumnoService) {}
 
   ngOnInit(): void {
     this.getAlumnos();
+    console.log(this.datosInscripcionesMensuales);
   }
 
   getAlumnos() {
@@ -43,73 +56,169 @@ export class CierreDeCajaComponent implements OnInit {
           ...element.payload.doc.data(),
         });
       });
-      this.calcularTotales();
+      this.calcularTotales(this.meses.map((m) => m.clave));
+      this.calcularInscripcionesPorMes();
     });
   }
 
-  // Método para calcular los ingresos totales por categoría y un total general de ingresos para un mes específico, basándose en un array de categorías y un mes específico (como parámetro mes).
+  calcularTotales(meses: string[]): void {
+    meses.forEach((mes) => {
+      this.datosMensuales[mes] = this.sumarIngresos(this.categorias, mes);
+    });
+  }
+
   sumarIngresos(
     categorias: string[],
     mes: string
   ): {
-    totalesPorCategoria: {
-      categoria: string;
-      totalMP: number;
-      totalE: number;
-    }[];
+    categorias: { categoria: string; totalMP: number; totalE: number }[];
     totalGeneral: number;
   } {
-    const resultados: { categoria: string; totalMP: number; totalE: number }[] =
-      [];
     let totalGeneral = 0;
-
-    for (const categoria of categorias) {
+    const totalesPorCategoria = categorias.map((categoria) => {
       let totalMP = 0;
       let totalE = 0;
 
-      const alumnosCategoria = this.alumnos.filter(
-        (alumno) => alumno.categoria === categoria
-      );
-
-      alumnosCategoria.forEach((alumno) => {
-        const valor = alumno[mes];
-        if (typeof valor === 'string') {
-          // Asegurarse de que el valor contiene dígitos antes de intentar convertirlo
-          const monto = parseFloat(valor.replace(/[^\d.-]/g, ''));
-          if (!isNaN(monto)) {
-            // Verificar que el monto es un número válido
-            if (valor.includes('MP')) {
-              totalMP += monto;
-            } else if (valor.includes('E')) {
-              totalE += monto;
+      this.alumnos
+        .filter((alumno) => alumno.categoria === categoria)
+        .forEach((alumno) => {
+          const valor = alumno[mes];
+          if (typeof valor === 'string') {
+            const monto = parseFloat(valor.replace(/[^\d.-]/g, ''));
+            if (!isNaN(monto)) {
+              if (valor.includes('MP')) totalMP += monto;
+              if (valor.includes('E')) totalE += monto;
+              totalGeneral += monto;
             }
-            // Suma el monto al total general sin importar si es MP o E
-            totalGeneral += monto;
           }
-        }
-      });
+        });
+      return { categoria, totalMP, totalE };
+    });
 
-      resultados.push({ categoria, totalMP, totalE });
-    }
-
-    // Devuelve tanto los totales por categoría como el total general combinado de MP y E
-    return {
-      totalesPorCategoria: resultados,
-      totalGeneral: totalGeneral,
-    };
+    return { categorias: totalesPorCategoria, totalGeneral };
   }
-  //Calcula y almacena los totales por categoría y los totales generales de los meses especificados
-  calcularTotales(): void {
-    const resultadoMarzo = this.sumarIngresos(this.categorias, 'mesMarzo');
-    this.mesMarzo = resultadoMarzo.totalesPorCategoria;
-    this.totalGeneralMarzo = resultadoMarzo.totalGeneral; // Almacena el total general
 
-    const resultadoAbril = this.sumarIngresos(this.categorias, 'mesAbril');
-    this.mesAbril = resultadoAbril.totalesPorCategoria;
-    this.totalGeneralAbril = resultadoAbril.totalGeneral;
+  totalInscripcion: number = 0;
+  datosInscripcionesMensuales: { [key: string]: number } = {};
 
-    const resultadoMayo = this.sumarIngresos(this.categorias, 'mesMayo');
-    this.mesMayo = resultadoMayo.totalesPorCategoria;
-    this.totalGeneralMayo = resultadoMayo.totalGeneral;
+  parseCurrency(value: string): number {
+    if (!value) return 0;
+    // Elimina todos los caracteres no numéricos excepto el punto decimal
+    const numberValue = parseFloat(value.replace(/[^\d.-]/g, ''));
+    return isNaN(numberValue) ? 0 : numberValue;
+  }
+
+  calcularInscripcionesPorMes() {
+    this.datosInscripcionesMensuales = {}; // Reiniciar los datos
+
+    this.alumnos.forEach((alumno) => {
+      const montoInsc = this.parseCurrency(alumno.montoInsc);
+      if (alumno.fechaMontoInsc) {
+        const fecha = new Date(alumno.fechaMontoInsc.seconds * 1000);
+        const mes = fecha.getMonth() + 1; // Obtiene el mes (1-12)
+        const claveMes = `mes${mes}`; // mes1, mes2, etc.
+
+        if (!this.datosInscripcionesMensuales[claveMes]) {
+          this.datosInscripcionesMensuales[claveMes] = 0;
+        }
+        this.datosInscripcionesMensuales[claveMes] += montoInsc;
+      }
+    });
   }
 }
+
+// import { Component, OnInit } from '@angular/core';
+// import { MatTableDataSource } from '@angular/material/table';
+// import { AlumnoService } from 'src/services/alumno.service';
+
+// @Component({
+//   selector: 'app-cierre-de-caja',
+//   templateUrl: './cierre-de-caja.component.html',
+//   styleUrls: ['./cierre-de-caja.component.css'],
+// })
+// export class CierreDeCajaComponent implements OnInit {
+//   dataSource = new MatTableDataSource<any>();
+//   displayedColumns: string[] = ['categoria', 'totalMP', 'totalE'];
+//   alumnos: any[] = [];
+//   categorias = [
+//     'Mosquitos',
+//     'PMM',
+//     'PreMini',
+//     'Mini',
+//     'U13',
+//     'U15',
+//     'U17',
+//     'Primera',
+//   ];
+//   meses = [
+//     { clave: 'mesMarzo', nombre: 'Marzo' },
+//     { clave: 'mesAbril', nombre: 'Abril' },
+//     { clave: 'mesMayo', nombre: 'Mayo' },
+//     { clave: 'mesJunio', nombre: 'Junio' },
+//     { clave: 'mesJulio', nombre: 'Julio' },
+//     { clave: 'mesAgosto', nombre: 'Agosto' },
+//     { clave: 'mesSeptiembre', nombre: 'Septiembre' },
+//     { clave: 'mesOctubre', nombre: 'Octubre' },
+//     { clave: 'mesNoviembre', nombre: 'Noviembre' },
+//     { clave: 'mesDiciembre', nombre: 'Diciembre' },
+//   ];
+//   datosMensuales: {
+//     [key: string]: {
+//       categorias: { categoria: string; totalMP: number; totalE: number }[];
+//       totalGeneral: number;
+//     };
+//   } = {};
+
+//   constructor(private _alumnoService: AlumnoService) {}
+
+//   ngOnInit(): void {
+//     this.getAlumnos();
+//   }
+
+//   getAlumnos() {
+//     this._alumnoService.getAlumnos().subscribe((data) => {
+//       this.alumnos = data.map((element: any) => ({
+//         id: element.payload.doc.id,
+//         ...element.payload.doc.data(),
+//       }));
+//       this.calcularTotales(this.meses.map((m) => m.clave));
+//     });
+//   }
+
+//   calcularTotales(meses: string[]): void {
+//     meses.forEach((mes) => {
+//       this.datosMensuales[mes] = this.sumarIngresos(this.categorias, mes);
+//     });
+//   }
+
+//   sumarIngresos(
+//     categorias: string[],
+//     mes: string
+//   ): {
+//     categorias: { categoria: string; totalMP: number; totalE: number }[];
+//     totalGeneral: number;
+//   } {
+//     let totalGeneral = 0;
+//     const totalesPorCategoria = categorias.map((categoria) => {
+//       let totalMP = 0;
+//       let totalE = 0;
+
+//       this.alumnos
+//         .filter((alumno) => alumno.categoria === categoria)
+//         .forEach((alumno) => {
+//           const valor = alumno[mes];
+//           if (typeof valor === 'string') {
+//             const monto = parseFloat(valor.replace(/[^\d.-]/g, ''));
+//             if (!isNaN(monto)) {
+//               if (valor.includes('MP')) totalMP += monto;
+//               if (valor.includes('E')) totalE += monto;
+//               totalGeneral += monto;
+//             }
+//           }
+//         });
+//       return { categoria, totalMP, totalE };
+//     });
+
+//     return { categorias: totalesPorCategoria, totalGeneral };
+//   }
+// }

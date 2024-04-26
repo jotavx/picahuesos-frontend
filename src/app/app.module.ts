@@ -8,7 +8,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
-
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
@@ -17,7 +16,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialogModule } from '@angular/material/dialog';
 import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
-
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -46,6 +44,7 @@ import { PaymentHistoryComponent } from './components/payment-history/payment-hi
 import { CierreDeCajaComponent } from './components/cierre-de-caja/cierre-de-caja.component';
 import { BajasComponent } from './components/bajas/bajas.component';
 import { ConfirmBajaDialogComponent } from './components/confirm-baja-dialog/confirm-baja-dialog.component';
+import { EnvioEmailDialogComponent } from './components/envio-email-dialog/envio-email-dialog.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +66,7 @@ import { ConfirmBajaDialogComponent } from './components/confirm-baja-dialog/con
     CierreDeCajaComponent,
     BajasComponent,
     ConfirmBajaDialogComponent,
+    EnvioEmailDialogComponent,
   ],
   imports: [
     BrowserModule,

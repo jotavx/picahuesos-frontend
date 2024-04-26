@@ -1,13 +1,14 @@
 <app-navbar></app-navbar>
 <div class="custom-container mt-5">
-  <div class="subtitle mb-5">Historial de pagos</div>
+  <div class="subtitle">Historial de pagos</div>
+  <div class="d-flex mt-4">
+    <button mat-raised-button color="primary" class="mx-2 mb-3 panel fw-bold custom-button"
+      (click)="exportExcel()"><small><i class="fa-solid fa-file-excel"></i> Exportar
+        Excel</small></button>
+  </div>
   <div class="card">
 
-    <div class="d-flex mt-2">
-      <button mat-stroked-button color="accent" class="mx-2 panel fw-bold mb-3" (click)="exportExcel()"><small><i
-            class="fa-solid fa-file-excel"></i> Exportar
-          Excel</small></button>
-    </div>
+
     <div class="card-body">
       <mat-form-field>
         <mat-label class="no-select">Buscar</mat-label>
@@ -39,7 +40,9 @@
 
           <ng-container matColumnDef="montoInsc">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Monto Inscripción </th>
-            <td mat-cell *matCellDef="let row"> {{row.montoInsc}} </td>
+            <td mat-cell *matCellDef="let row"> {{row.montoInsc}} - <br> <small
+                class="fw-bold">{{row.fechaMontoInsc?.toDate() | date:
+                'dd/MM'}} </small></td>
           </ng-container>
 
           <ng-container matColumnDef="mesMarzo">
@@ -104,6 +107,5 @@
       </div>
     </div>
   </div>
-  <br><br><br>
+  <br><br><br><br><br>
 </div>
-<br><br><br><br><br><br>

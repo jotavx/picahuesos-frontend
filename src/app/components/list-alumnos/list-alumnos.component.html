@@ -1,13 +1,15 @@
-<div class="custom-container mt-5">
-  <div class="card">
-    <div class="d-flex ">
-      <button mat-stroked-button color="primary" class=" mx-2 mt-3 panel fw-bold " (click)="
-        openCreateDialog()"><small><i class="fa-solid fa-plus"></i> Agregar
-          Alumno/a</small></button>
-      <button mat-stroked-button color="primary" class=" mx-2 mt-3 panel fw-bold" (click)="exportExcel()"><small><i
-            class="fa-solid fa-file-excel"></i> Exportar
-          Excel</small></button>
-    </div>
+<div class="custom-container mt-3">
+  <div class="panel-list-buttons ">
+    <button mat-raised-button color="primary" class=" mx-2 panel fw-bold  custom-button" (click)="
+              openCreateDialog()"><i class="fa-solid fa-plus"></i><small class="none"> Agregar
+        Alumno/a</small></button>
+    <button mat-raised-button color="primary" class=" mx-2 panel fw-bold custom-button" (click)="
+              exportExcel()"><i class="fa-solid fa-file-excel"></i><small class="none"> Exportar
+        Excel</small></button>
+    <button mat-raised-button color="primary" class=" mx-2 panel fw-bold custom-button" (click)="
+              openEnvioEmail()"><i class="fa-solid fa-envelope"></i><small class="none"> Enviar Email</small></button>
+  </div>
+  <div class="card mt-3">
     <div class="card-body">
       <mat-form-field>
         <mat-label class="no-select">Buscar</mat-label>
@@ -37,7 +39,7 @@
             </td>
           </ng-container>
 
-          <ng-container matColumnDef="dni">
+          <ng-container matColumnDef="dni" width="10px">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> DNI </th>
             <td mat-cell *matCellDef="let row"> {{row.dni}} </td>
           </ng-container>

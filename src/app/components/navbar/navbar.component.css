@@ -2,17 +2,33 @@
   display: flex;
   width: 100%;
   justify-content: center;
-  background-color: #212529;
+  /* background-color: #212529; */
+  background-color: rgba(0, 0, 0, 0.102);
+}
+
+.navbar {
+  background-color: rgba(0, 0, 0, 0.102);
 }
 
 .panel.active {
-  background-color: rgb(133, 74, 49);
+  background-color: #4560f8;
+}
+
+.navbar-brand {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: white;
 }
 
 @media (max-width: 576px) {
   .panel-buttons {
     flex-direction: column;
-    width: 80%;
+    width: 100%;
     margin: 0 auto;
+  }
+
+  .logout {
+    font-size: 12px;
   }
 }

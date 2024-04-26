@@ -1,10 +1,9 @@
-<app-navbar></app-navbar>
-<div class="custom-container mt-5">
-  <div class="subtitle mb-5">Enviar Email</div>
+<h2 mat-dialog-title class="text-center ">Enviar Email</h2>
+<mat-dialog-content>
   <div class="card">
     <div class="card-body">
       <form [formGroup]="datosCorreo">
-        <div *ngIf="loading" class="spinner-border text-light float-end mb-3" role="status">
+        <div *ngIf="loading" class="spinner-border text-dark float-end mb-3" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
         <mat-form-field appearance="fill">
@@ -35,9 +34,9 @@
         <textarea class="form-control" rows="
         10" formControlName="mensaje" placeholder="Mensaje"></textarea>
       </form>
-      <button mat-raised-button color="primary" class=" float-end mt-2" (click)="  envioCorreo()">Enviar</button>
-      <button mat-raised-button color="accent" routerLink="/home" class="float-end mx-2 mt-2">Volver</button>
+      <button mat-raised-button color="primary" class=" float-end mt-2" (click)="envioCorreo()">Enviar</button>
+      <button mat-raised-button color="accent" mat-button mat-dialog-close class="float-end mx-2 mt-2">Volver</button>
     </div>
   </div>
   <br><br><br>
-</div>
+</mat-dialog-content>

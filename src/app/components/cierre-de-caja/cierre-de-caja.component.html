@@ -2,92 +2,114 @@
 <div class="custom-container mt-5">
   <div class="subtitle mb-5">Cierre de caja</div>
   <div class="container-payments">
-
     <mat-tab-group #tabGroup>
-      <mat-tab label="Marzo" value="Marzo">
+      <mat-tab *ngFor="let mes of meses" [label]="mes.nombre">
         <div class="container-table">
-          <br><br><br><br><br>
-          <h2 class="text-center ">Cierre de caja Marzo</h2>
-          <div class="table">
-            <div class="table-header">
-              <div class="header__item">Categoria</div>
-              <div class="header__item">Total MP</div>
-              <div class="header__item">Total E</div>
-            </div>
-            <div class="table-content" *ngFor="let resultado of mesMarzo">
-              <div class="table-row">
-                <div class="table-data">{{ resultado.categoria }}</div>
-                <div class="table-data">${{resultado.totalMP.toLocaleString('es-AR', { minimumFractionDigits: 3 }) }}
-                </div>
-                <div class="table-data">${{resultado.totalE.toLocaleString('es-AR', { minimumFractionDigits: 3 }) }}
-                </div>
+          <h2 class="text-center mes-nombre mt-5">{{ mes.nombre }}</h2>
+          <div *ngIf="datosMensuales[mes.clave]">
+            <mat-table [dataSource]="datosMensuales[mes.clave].categorias" class="mat-elevation-z8">
+              <ng-container matColumnDef="categoria">
+                <mat-header-cell *matHeaderCellDef> Categoria </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.categoria}} </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="totalMP">
+                <mat-header-cell *matHeaderCellDef> Total MP </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  ${{element.totalMP.toLocaleString('es-AR', {minimumFractionDigits: 3})}}
+                </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="totalE">
+                <mat-header-cell *matHeaderCellDef> Total E </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  ${{element.totalE.toLocaleString('es-AR', {minimumFractionDigits: 3})}}
+                </mat-cell>
+              </ng-container>
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+
+
+            <div *ngIf="datosMensuales[mes.clave] as monthlyData" class="datos">
+              <div class="montos">
+                <h3 class="fw-bold text-center">Total abonos</h3>
+                <p class=" fw-bold text-center text-success">
+                  ${{monthlyData.totalGeneral.toLocaleString('es-AR',
+                  {minimumFractionDigits: 3})}}</p>
+              </div>
+              <div class="montos">
+                <h3 class="fw-bold text-center">Total inscripción {{mes.nombre}}</h3>
+                <p class="fw-bold text-center text-success">{{ datosInscripcionesMensuales['mes' + mes.num]
+                  |
+                  currency:'$':'symbol':'1.3-6' }}</p>
+              </div>
+              <div class="montos">
+                <h3 class="fw-bold final text-center">Total final</h3>
+                <p class="fw-bold text-center text-success">$0.000</p>
               </div>
             </div>
+
+            <br><br><br>
           </div>
-          <app-main-container>
-            <div class="fw-bold">Total Final</div>
-            ${{totalGeneralMarzo.toLocaleString('es-AR', { minimumFractionDigits: 3 })}}
-          </app-main-container>
         </div>
+
+
       </mat-tab>
-      <mat-tab label="Abril" value="Abril">
-        <br><br><br><br><br>
+    </mat-tab-group>
+  </div>
+  <br><br><br><br><br>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <app-navbar></app-navbar>
+<div class="custom-container mt-5">
+  <div class="subtitle mb-5">Cierre de caja</div>
+  <div class="container-payments">
+    <mat-tab-group #tabGroup>
+      <mat-tab *ngFor="let mes of meses" [label]="mes.nombre">
         <div class="container-table">
-          <h2 class="text-center ">Cierre de caja Abril</h2>
-          <div class="table">
-            <div class="table-header">
-              <div class="header__item">Categoria</div>
-              <div class="header__item">Total MP</div>
-              <div class="header__item">Total E</div>
-            </div>
 
-            <div class="table-content" *ngFor="let resultado of mesAbril">
-              <div class="table-row">
-                <div class="table-data">{{ resultado.categoria }}</div>
-                <div class="table-data">${{resultado.totalMP.toLocaleString('es-AR', { minimumFractionDigits: 3 }) }}
-                </div>
-                <div class="table-data">${{resultado.totalE.toLocaleString('es-AR', { minimumFractionDigits: 3 }) }}
-                </div>
-              </div>
-
+          <h2 class="text-center mes-nombre mt-5">{{ mes.nombre }}</h2>
+          <div *ngIf="datosMensuales[mes.clave]">
+            <mat-table [dataSource]="datosMensuales[mes.clave].categorias" class="mat-elevation-z8">
+              <ng-container matColumnDef="categoria">
+                <mat-header-cell *matHeaderCellDef> Categoria </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.categoria}} </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="totalMP">
+                <mat-header-cell *matHeaderCellDef> Total MP </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  ${{element.totalMP.toLocaleString('es-AR', {minimumFractionDigits: 3})}}
+                </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="totalE">
+                <mat-header-cell *matHeaderCellDef> Total E </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  ${{element.totalE.toLocaleString('es-AR', {minimumFractionDigits: 3})}}
+                </mat-cell>
+              </ng-container>
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+            <div *ngIf="datosMensuales[mes.clave] as monthlyData">
+              <div class="fw-bold text-center final mt-5">Total Final</div>
+              <p class="total fw-bold text-center mt-2">${{monthlyData.totalGeneral.toLocaleString('es-AR',
+                {minimumFractionDigits: 3})}}</p>
+              <br><br>
             </div>
           </div>
-          <app-main-container>
-            <div class="fw-bold">Total Final</div>
-            ${{totalGeneralAbril.toLocaleString('es-AR', { minimumFractionDigits: 3 })}}
-          </app-main-container>
         </div>
-        <mat-tab label="Mayo" value="Mayo">
-          <br><br><br><br><br>
-          <div class="container-table">
-            <h2 class="text-center ">Cierre de caja Mayo</h2>
-            <div class="table">
-              <div class="table-header">
-                <div class="header__item">Categoria</div>
-                <div class="header__item">Total MP</div>
-                <div class="header__item">Total E</div>
-              </div>
-
-              <div class="table-content" *ngFor="let resultado of mesMayo">
-                <div class="table-row">
-                  <div class="table-data">{{ resultado.categoria }}</div>
-                  <div class="table-data">${{resultado.totalMP.toLocaleString('es-AR', { minimumFractionDigits: 3 }) }}
-                  </div>
-                  <div class="table-data">${{resultado.totalE.toLocaleString('es-AR', { minimumFractionDigits: 3 }) }}
-                  </div>
-                </div>
-
-              </div>
-            </div>
-            <app-main-container>
-              <div class="fw-bold">Total Final</div>
-              ${{totalGeneralMayo.toLocaleString('es-AR', { minimumFractionDigits: 3 })}}
-            </app-main-container>
-          </div>
-        </mat-tab>
-        <mat-tab label="Junio" value="Junio"></mat-tab>
       </mat-tab>
     </mat-tab-group>
   </div>
   <br><br><br><br><br><br><br><br>
-</div>
+</div> -->

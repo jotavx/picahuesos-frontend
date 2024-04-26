@@ -61,6 +61,7 @@ export class CreateAlumnComponent implements OnInit {
       mesAbonado: ['', Validators.required],
       seguroAltaBaja: [''],
       montoInsc: [''],
+      fechaMontoInsc: [''],
       mesMarzo: [''],
       mesAbril: [''],
       mesMayo: [''],
@@ -148,6 +149,7 @@ export class CreateAlumnComponent implements OnInit {
 
   //Métodos para comunicarse con el servicio alumnoService para agregar o actualizar datos en la base de datos.
   agregarAlumno() {
+    const fechaActual = new Date();
     const alumno: any = {
       nombre: this.createAlumno.value.nombre,
       fechaNacimiento: this.createAlumno.value.fechaNacimiento,
@@ -159,6 +161,7 @@ export class CreateAlumnComponent implements OnInit {
       mesAbonado: this.createAlumno.value.mesAbonado,
       seguroAltaBaja: this.createAlumno.value.seguroAltaBaja,
       montoInsc: this.createAlumno.value.montoInsc,
+      fechaMontoInsc: this.createAlumno.value.montoInsc ? fechaActual : null,
       mesMarzo: this.createAlumno.value.mesMarzo,
       mesAbril: this.createAlumno.value.mesAbril,
       mesMayo: this.createAlumno.value.mesMayo,
@@ -195,6 +198,7 @@ export class CreateAlumnComponent implements OnInit {
   }
 
   editarAlumno(id: string) {
+    const fechaActual = new Date();
     const alumno: any = {
       nombre: this.createAlumno.value.nombre,
       fechaNacimiento: this.createAlumno.value.fechaNacimiento,
@@ -206,6 +210,7 @@ export class CreateAlumnComponent implements OnInit {
       mesAbonado: this.createAlumno.value.mesAbonado,
       seguroAltaBaja: this.createAlumno.value.seguroAltaBaja,
       montoInsc: this.createAlumno.value.montoInsc,
+      fechaMontoInsc: this.createAlumno.value.montoInsc ? fechaActual : null,
       mesMarzo: this.createAlumno.value.mesMarzo,
       mesAbril: this.createAlumno.value.mesAbril,
       mesMayo: this.createAlumno.value.mesMayo,
@@ -247,6 +252,7 @@ export class CreateAlumnComponent implements OnInit {
         mesAbonado: this.data.mesAbonado,
         seguroAltaBaja: this.data.seguroAltaBaja,
         montoInsc: this.data.montoInsc,
+        fechaMontoInsc: this.data.fechaMontoInsc,
         mesMarzo: this.data.mesMarzo,
         mesAbril: this.data.mesAbril,
         mesMayo: this.data.mesMayo,

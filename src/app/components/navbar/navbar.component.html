@@ -1,22 +1,24 @@
-<nav class="navbar navbar-dark bg-dark">
+<!-- <nav class="navbar navbar-dark bg-dark"> -->
+<nav class="navbar">
   <div class="container-fluid">
-    <a class="navbar-brand ms-3" href="#">App Alumnos</a>
-    <button mat-raised-button color="warn" (click)="openDialog()" class=" float-end mx-2 fw-bold">Cerrar Sesión</button>
+    <a class="navbar-brand no-select ms-3">Picahuesos</a>
+    <button mat-raised-button color="warn" (click)="openDialog()" class=" logout float-end mx-2 fw-bold">Cerrar
+      Sesión</button>
   </div>
 </nav>
 <div class="panel-buttons p-2">
-  <button mat-stroked-button color="accent" class="mt-2 mx-2 panel fw-bold" routerLink="/home"
+  <button mat-stroked-button color="accent" class="mt-2 mx-2 panel fw-bold custom-button " routerLink="/home"
     routerLinkActive="active"><small><i class="fa-solid fa-house"></i>
       Inicio</small></button>
-  <button mat-stroked-button color="accent" class="mt-2 mx-2 panel fw-bold" routerLink="/envio-email"
+  <!-- <button mat-stroked-button color="accent" class="mt-2 mx-2 panel fw-bold custom-button " routerLink="/envio-email"
     routerLinkActive="active"><small><i class="fa-solid fa-envelope"></i> Envio de
-      Email</small></button>
-  <button mat-stroked-button color="accent" class="mt-2 mx-2 panel fw-bold" routerLink="/historial-pagos"
+      Email</small></button> -->
+  <button mat-stroked-button color="accent" class="mt-2 mx-2 panel fw-bold custom-button " routerLink="/historial-pagos"
     routerLinkActive="active"><small><i class="fa-solid fa-landmark"></i> Historial
       de
       pagos</small></button>
-  <button mat-stroked-button color="accent" class="mt-2 mx-2 panel fw-bold" routerLink="/cierre-de-caja"
+  <button mat-stroked-button color="accent" class="mt-2 mx-2 panel fw-bold custom-button " routerLink="/cierre-de-caja"
     routerLinkActive="active"><small><i class="fa-solid fa-coins"></i> Cierre de caja</small></button>
-  <button mat-stroked-button color="accent" class="mt-2 mx-2 panel fw-bold" routerLink="/bajas"
+  <button mat-stroked-button color="accent" class="mt-2 mx-2 panel fw-bold custom-button " routerLink="/bajas"
     routerLinkActive="active"><small><i class="fa-solid fa-arrow-trend-down"></i> Bajas</small></button>
 </div>

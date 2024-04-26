@@ -1,6 +1,43 @@
 .container-payments {
   background-color: white;
   width: 100%;
-  margin: 0 auto;
   border-radius: 10px;
+}
+
+.total {
+  font-size: 18px;
+}
+
+.container-table {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.montos {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.datos {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 30px;
+}
+
+@media (max-width: 576px) {
+  .datos {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .montos:nth-child(1) {
+    margin-top: 40px;
+  }
+
+  .montos {
+    margin-top: 10px;
+  }
 }
