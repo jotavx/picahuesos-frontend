@@ -13,15 +13,21 @@
                 <mat-cell *matCellDef="let element"> {{element.categoria}} </mat-cell>
               </ng-container>
               <ng-container matColumnDef="totalMP">
-                <mat-header-cell *matHeaderCellDef> Total MP </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef> MP</mat-header-cell>
                 <mat-cell *matCellDef="let element">
-                  ${{element.totalMP.toLocaleString('es-AR', {minimumFractionDigits: 3})}}
+                  ${{element.totalMP.toLocaleString('ar', 'AR')}}
                 </mat-cell>
               </ng-container>
               <ng-container matColumnDef="totalE">
-                <mat-header-cell *matHeaderCellDef> Total E </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef> Efectivo </mat-header-cell>
                 <mat-cell *matCellDef="let element">
-                  ${{element.totalE.toLocaleString('es-AR', {minimumFractionDigits: 3})}}
+                  ${{element.totalE.toLocaleString('ar', 'AR')}}
+                </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="totalSinEspecificar">
+                <mat-header-cell *matHeaderCellDef>Sin especificar</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  ${{element.totalSinEspecificar.toLocaleString('ar', 'AR') }}
                 </mat-cell>
               </ng-container>
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -29,18 +35,16 @@
             </mat-table>
 
 
-            <div *ngIf="datosMensuales[mes.clave] as monthlyData" class="datos">
+            <div *ngIf="datosMensuales[mes.clave] as montosData" class="datos">
               <div class="montos">
                 <h3 class="fw-bold text-center">Total abonos</h3>
                 <p class=" fw-bold text-center text-success">
-                  ${{monthlyData.totalGeneral.toLocaleString('es-AR',
-                  {minimumFractionDigits: 3})}}</p>
+                  {{montosData.totalGeneral | currency:'$':'symbol':'1.0'}}</p>
               </div>
               <div class="montos">
                 <h3 class="fw-bold text-center">Total inscripción {{mes.nombre}}</h3>
                 <p class="fw-bold text-center text-success">{{ datosInscripcionesMensuales['mes' + mes.num]
-                  |
-                  currency:'$':'symbol':'1.3-6' }}</p>
+                  | currency:'$':'symbol':'1.0' }}</p>
               </div>
               <div class="montos">
                 <h3 class="fw-bold final text-center">Total final</h3>
@@ -58,58 +62,3 @@
   </div>
   <br><br><br><br><br>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- <app-navbar></app-navbar>
-<div class="custom-container mt-5">
-  <div class="subtitle mb-5">Cierre de caja</div>
-  <div class="container-payments">
-    <mat-tab-group #tabGroup>
-      <mat-tab *ngFor="let mes of meses" [label]="mes.nombre">
-        <div class="container-table">
-
-          <h2 class="text-center mes-nombre mt-5">{{ mes.nombre }}</h2>
-          <div *ngIf="datosMensuales[mes.clave]">
-            <mat-table [dataSource]="datosMensuales[mes.clave].categorias" class="mat-elevation-z8">
-              <ng-container matColumnDef="categoria">
-                <mat-header-cell *matHeaderCellDef> Categoria </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.categoria}} </mat-cell>
-              </ng-container>
-              <ng-container matColumnDef="totalMP">
-                <mat-header-cell *matHeaderCellDef> Total MP </mat-header-cell>
-                <mat-cell *matCellDef="let element">
-                  ${{element.totalMP.toLocaleString('es-AR', {minimumFractionDigits: 3})}}
-                </mat-cell>
-              </ng-container>
-              <ng-container matColumnDef="totalE">
-                <mat-header-cell *matHeaderCellDef> Total E </mat-header-cell>
-                <mat-cell *matCellDef="let element">
-                  ${{element.totalE.toLocaleString('es-AR', {minimumFractionDigits: 3})}}
-                </mat-cell>
-              </ng-container>
-              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-            </mat-table>
-            <div *ngIf="datosMensuales[mes.clave] as monthlyData">
-              <div class="fw-bold text-center final mt-5">Total Final</div>
-              <p class="total fw-bold text-center mt-2">${{monthlyData.totalGeneral.toLocaleString('es-AR',
-                {minimumFractionDigits: 3})}}</p>
-              <br><br>
-            </div>
-          </div>
-        </div>
-      </mat-tab>
-    </mat-tab-group>
-  </div>
-  <br><br><br><br><br><br><br><br>
-</div> -->

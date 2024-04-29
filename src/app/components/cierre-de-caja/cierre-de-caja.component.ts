@@ -2,6 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlumnoService } from 'src/services/alumno.service';
 
+interface CategoriaTotal {
+  categoria: string;
+  totalMP: number;
+  totalE: number;
+  totalSinEspecificar: number;
+}
+
+interface DatosMensuales {
+  [key: string]: {
+    categorias: CategoriaTotal[];
+    totalGeneral: number;
+  };
+}
+
 @Component({
   selector: 'app-cierre-de-caja',
   templateUrl: './cierre-de-caja.component.html',
@@ -9,7 +23,12 @@ import { AlumnoService } from 'src/services/alumno.service';
 })
 export class CierreDeCajaComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
-  displayedColumns: string[] = ['categoria', 'totalMP', 'totalE'];
+  displayedColumns: string[] = [
+    'categoria',
+    'totalMP',
+    'totalE',
+    'totalSinEspecificar',
+  ];
   alumnos: any[] = [];
   categorias = [
     'Mosquitos',
@@ -33,29 +52,23 @@ export class CierreDeCajaComponent implements OnInit {
     { clave: 'mesNoviembre', nombre: 'Noviembre', num: 11 },
     { clave: 'mesDiciembre', nombre: 'Diciembre', num: 12 },
   ];
-  datosMensuales: {
-    [key: string]: {
-      categorias: { categoria: string; totalMP: number; totalE: number }[];
-      totalGeneral: number;
-    };
-  } = {};
+  datosMensuales: DatosMensuales = {};
+
+  totalInscripcion: number = 0;
+  datosInscripcionesMensuales: { [key: string]: number } = {};
 
   constructor(private _alumnoService: AlumnoService) {}
 
   ngOnInit(): void {
     this.getAlumnos();
-    console.log(this.datosInscripcionesMensuales);
   }
 
   getAlumnos() {
     this._alumnoService.getAlumnos().subscribe((data) => {
-      this.alumnos = [];
-      data.forEach((element: any) => {
-        this.alumnos.push({
-          id: element.payload.doc.id,
-          ...element.payload.doc.data(),
-        });
-      });
+      this.alumnos = data.map((element: any) => ({
+        id: element.payload.doc.id,
+        ...element.payload.doc.data(),
+      }));
       this.calcularTotales(this.meses.map((m) => m.clave));
       this.calcularInscripcionesPorMes();
     });
@@ -67,56 +80,76 @@ export class CierreDeCajaComponent implements OnInit {
     });
   }
 
+  parseAmount(value: string): number {
+    const formatUsesCommas = value.includes(',');
+    const formatUsesPoints = value.includes('.');
+
+    let normalizedValue = value;
+
+    if (formatUsesCommas && formatUsesPoints) {
+      normalizedValue = value.replace(/,/g, '');
+    } else if (formatUsesCommas) {
+      normalizedValue = value.replace(/,/g, '.');
+    } else {
+      normalizedValue = value.replace(/\./g, '');
+    }
+
+    return parseFloat(normalizedValue);
+  }
+
   sumarIngresos(
     categorias: string[],
     mes: string
   ): {
-    categorias: { categoria: string; totalMP: number; totalE: number }[];
+    categorias: CategoriaTotal[];
     totalGeneral: number;
   } {
     let totalGeneral = 0;
     const totalesPorCategoria = categorias.map((categoria) => {
-      let totalMP = 0;
-      let totalE = 0;
-
-      this.alumnos
+      const { totalMP, totalE, totalSinEspecificar } = this.alumnos
         .filter((alumno) => alumno.categoria === categoria)
-        .forEach((alumno) => {
-          const valor = alumno[mes];
-          if (typeof valor === 'string') {
-            const monto = parseFloat(valor.replace(/[^\d.-]/g, ''));
-            if (!isNaN(monto)) {
-              if (valor.includes('MP')) totalMP += monto;
-              if (valor.includes('E')) totalE += monto;
-              totalGeneral += monto;
+        .reduce(
+          (acc, alumno) => {
+            const valor = alumno[mes];
+            if (typeof valor === 'string') {
+              const monto = this.parseAmount(valor.replace(/[^\d.-]/g, ''));
+              if (!isNaN(monto)) {
+                if (valor.includes('MP')) {
+                  acc.totalMP += monto;
+                } else if (valor.includes('E')) {
+                  acc.totalE += monto;
+                } else {
+                  acc.totalSinEspecificar += monto;
+                }
+                totalGeneral += monto;
+              }
             }
-          }
-        });
-      return { categoria, totalMP, totalE };
+            return acc;
+          },
+          { totalMP: 0, totalE: 0, totalSinEspecificar: 0 }
+        );
+      return { categoria, totalMP, totalE, totalSinEspecificar };
     });
 
     return { categorias: totalesPorCategoria, totalGeneral };
   }
 
-  totalInscripcion: number = 0;
-  datosInscripcionesMensuales: { [key: string]: number } = {};
-
   parseCurrency(value: string): number {
     if (!value) return 0;
     // Elimina todos los caracteres no numéricos excepto el punto decimal
-    const numberValue = parseFloat(value.replace(/[^\d.-]/g, ''));
+    const numberValue = this.parseAmount(value.replace(/[^\d.-]/g, ''));
     return isNaN(numberValue) ? 0 : numberValue;
   }
 
   calcularInscripcionesPorMes() {
-    this.datosInscripcionesMensuales = {}; // Reiniciar los datos
+    this.datosInscripcionesMensuales = {};
 
     this.alumnos.forEach((alumno) => {
       const montoInsc = this.parseCurrency(alumno.montoInsc);
       if (alumno.fechaMontoInsc) {
         const fecha = new Date(alumno.fechaMontoInsc.seconds * 1000);
-        const mes = fecha.getMonth() + 1; // Obtiene el mes (1-12)
-        const claveMes = `mes${mes}`; // mes1, mes2, etc.
+        const mes = fecha.getMonth() + 1;
+        const claveMes = `mes${mes}`;
 
         if (!this.datosInscripcionesMensuales[claveMes]) {
           this.datosInscripcionesMensuales[claveMes] = 0;
@@ -126,99 +159,3 @@ export class CierreDeCajaComponent implements OnInit {
     });
   }
 }
-
-// import { Component, OnInit } from '@angular/core';
-// import { MatTableDataSource } from '@angular/material/table';
-// import { AlumnoService } from 'src/services/alumno.service';
-
-// @Component({
-//   selector: 'app-cierre-de-caja',
-//   templateUrl: './cierre-de-caja.component.html',
-//   styleUrls: ['./cierre-de-caja.component.css'],
-// })
-// export class CierreDeCajaComponent implements OnInit {
-//   dataSource = new MatTableDataSource<any>();
-//   displayedColumns: string[] = ['categoria', 'totalMP', 'totalE'];
-//   alumnos: any[] = [];
-//   categorias = [
-//     'Mosquitos',
-//     'PMM',
-//     'PreMini',
-//     'Mini',
-//     'U13',
-//     'U15',
-//     'U17',
-//     'Primera',
-//   ];
-//   meses = [
-//     { clave: 'mesMarzo', nombre: 'Marzo' },
-//     { clave: 'mesAbril', nombre: 'Abril' },
-//     { clave: 'mesMayo', nombre: 'Mayo' },
-//     { clave: 'mesJunio', nombre: 'Junio' },
-//     { clave: 'mesJulio', nombre: 'Julio' },
-//     { clave: 'mesAgosto', nombre: 'Agosto' },
-//     { clave: 'mesSeptiembre', nombre: 'Septiembre' },
-//     { clave: 'mesOctubre', nombre: 'Octubre' },
-//     { clave: 'mesNoviembre', nombre: 'Noviembre' },
-//     { clave: 'mesDiciembre', nombre: 'Diciembre' },
-//   ];
-//   datosMensuales: {
-//     [key: string]: {
-//       categorias: { categoria: string; totalMP: number; totalE: number }[];
-//       totalGeneral: number;
-//     };
-//   } = {};
-
-//   constructor(private _alumnoService: AlumnoService) {}
-
-//   ngOnInit(): void {
-//     this.getAlumnos();
-//   }
-
-//   getAlumnos() {
-//     this._alumnoService.getAlumnos().subscribe((data) => {
-//       this.alumnos = data.map((element: any) => ({
-//         id: element.payload.doc.id,
-//         ...element.payload.doc.data(),
-//       }));
-//       this.calcularTotales(this.meses.map((m) => m.clave));
-//     });
-//   }
-
-//   calcularTotales(meses: string[]): void {
-//     meses.forEach((mes) => {
-//       this.datosMensuales[mes] = this.sumarIngresos(this.categorias, mes);
-//     });
-//   }
-
-//   sumarIngresos(
-//     categorias: string[],
-//     mes: string
-//   ): {
-//     categorias: { categoria: string; totalMP: number; totalE: number }[];
-//     totalGeneral: number;
-//   } {
-//     let totalGeneral = 0;
-//     const totalesPorCategoria = categorias.map((categoria) => {
-//       let totalMP = 0;
-//       let totalE = 0;
-
-//       this.alumnos
-//         .filter((alumno) => alumno.categoria === categoria)
-//         .forEach((alumno) => {
-//           const valor = alumno[mes];
-//           if (typeof valor === 'string') {
-//             const monto = parseFloat(valor.replace(/[^\d.-]/g, ''));
-//             if (!isNaN(monto)) {
-//               if (valor.includes('MP')) totalMP += monto;
-//               if (valor.includes('E')) totalE += monto;
-//               totalGeneral += monto;
-//             }
-//           }
-//         });
-//       return { categoria, totalMP, totalE };
-//     });
-
-//     return { categorias: totalesPorCategoria, totalGeneral };
-//   }
-// }

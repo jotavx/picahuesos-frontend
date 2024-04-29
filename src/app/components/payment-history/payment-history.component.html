@@ -28,7 +28,7 @@
       <div class="mat-elevation-z8">
         <table mat-table id="table-data" class="table table-striped" [dataSource]="dataSource" matSort>
 
-          <ng-container matColumnDef="nombreCompleto">
+          <ng-container matColumnDef="nombreCompleto" sticky>
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre Completo </th>
             <td mat-cell *matCellDef="let row">
               <p class="name-center fw-bold"> <span
