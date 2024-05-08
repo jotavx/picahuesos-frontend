@@ -114,9 +114,10 @@ export class CierreDeCajaComponent implements OnInit {
             if (typeof valor === 'string') {
               const monto = this.parseAmount(valor.replace(/[^\d.-]/g, ''));
               if (!isNaN(monto)) {
-                if (valor.includes('MP')) {
+                const valorMinusculas = valor.toLowerCase();
+                if (valorMinusculas.includes('mp')) {
                   acc.totalMP += monto;
-                } else if (valor.includes('E')) {
+                } else if (valorMinusculas.includes('e')) {
                   acc.totalE += monto;
                 } else {
                   acc.totalSinEspecificar += monto;

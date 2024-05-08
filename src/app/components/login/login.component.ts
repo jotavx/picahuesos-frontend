@@ -32,7 +32,7 @@ export class LoginComponent {
         //Se agrega la persistencia session para que al cerrar la pestaña o el navegador cierra la sesión
         this.afAuth.setPersistence('session').then(() => {});
         this.router.navigate(['/home']); //navega hasta el inicio del sitio
-        // this.envioStart(); //Llamar a la funcion para inicializar el servidor de envio de emails
+        this.envioStart(); //Llamar a la funcion para inicializar el servidor de envio de emails
       })
       .catch((error) => {
         this.loginError = true;
