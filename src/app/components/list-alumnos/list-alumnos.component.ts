@@ -11,6 +11,7 @@ import { CreateAlumnComponent } from '../create-alumn/create-alumn.component';
 import { EnvioComprobanteComponent } from '../envio-comprobante/envio-comprobante.component';
 import { ConfirmBajaDialogComponent } from '../confirm-baja-dialog/confirm-baja-dialog.component';
 import { EnvioEmailDialogComponent } from '../envio-email-dialog/envio-email-dialog.component';
+import { UserService } from 'src/services/user.service';
 
 @Component({
   selector: 'app-list-alumnos',
@@ -43,6 +44,7 @@ export class ListAlumnosComponent implements OnInit {
 
   constructor(
     private _alumnoService: AlumnoService,
+    private userService: UserService,
     private toastr: ToastrService,
     public dialog: MatDialog
   ) {}
@@ -189,5 +191,42 @@ export class ListAlumnosComponent implements OnInit {
     const dialogRef = this.dialog.open(EnvioEmailDialogComponent, {
       width: '1200px',
     });
+  }
+
+  envioStart() {
+    const correoParams = {
+      email: 'jotaviarruel97@gmail.com', // Destinatario
+      asunto: 'Servidor Inicializado',
+      mensaje: 'Se ha iniciado correctamente.',
+    };
+    this.userService.enviarCorreo(correoParams).subscribe(
+      (resp) => {
+        // Verificar si la respuesta del servidor tiene ok: true
+        if (resp && resp.ok === true) {
+          this.toastr.success(
+            'El envío de email se encuentra disponible',
+            'Servidor Inicializado',
+            { positionClass: 'toast-bottom-right' }
+          );
+        } else {
+          this.toastr.error(
+            'Si el error persiste, comunicarse con el soporte de la aplicación',
+            'Error al inicializar el servidor',
+            {
+              positionClass: 'toast-bottom-right',
+            }
+          );
+        }
+      },
+      (error) => {
+        this.toastr.error(
+          'Si el error persiste, comunicarse con el soporte de la aplicación',
+          'Error al inicializar el servidor',
+          {
+            positionClass: 'toast-bottom-right',
+          }
+        );
+      }
+    );
   }
 }

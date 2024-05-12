@@ -123,7 +123,7 @@ export class EnvioComprobanteComponent implements OnInit {
           // Mensaje de error
           this.toastr.error(
             'Se ha producido un error',
-            'Email de Pago Registrado',
+            'Email de Comprobante de Pago',
             {
               positionClass: 'toast-bottom-right',
             }
@@ -133,7 +133,7 @@ export class EnvioComprobanteComponent implements OnInit {
       (error) => {
         this.toastr.error(
           'Se ha producido un error',
-          'Email de Pago Registrado',
+          'Email de Comprobante de Pago',
           {
             positionClass: 'toast-bottom-right',
           }

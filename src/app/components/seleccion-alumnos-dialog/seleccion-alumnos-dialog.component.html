@@ -17,6 +17,13 @@
     </mat-tab-group>
     <table class="table table-striped" mat-table [dataSource]="dataSource" matSort>
 
+      <ng-container matColumnDef="seleccionar">
+        <th class="seleccion" mat-header-cell *matHeaderCellDef> Seleccionar </th>
+        <td class="seleccion" mat-cell *matCellDef="let row">
+          <mat-checkbox (change)="seleccionarAlumno($event, row)"></mat-checkbox>
+        </td>
+      </ng-container>
+
       <ng-container matColumnDef="nombreCompleto">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre Completo </th>
         <td mat-cell class="fw-bold" *matCellDef="let row"> {{row.nombre}} </td>
@@ -37,13 +44,6 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Mes Abonado </th>
         <td mat-cell *matCellDef="let row" [style.color]="getColorForFechaAbonado(row.mesAbonado)" class="fw-bold">
           {{ row.mesAbonado | date: 'dd/MM/yyyy' }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="seleccionar">
-        <th mat-header-cell *matHeaderCellDef> Seleccionar </th>
-        <td mat-cell *matCellDef="let row">
-          <mat-checkbox (change)="seleccionarAlumno($event, row)"></mat-checkbox>
         </td>
       </ng-container>
 

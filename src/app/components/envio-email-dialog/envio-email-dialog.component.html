@@ -3,9 +3,7 @@
   <div class="card">
     <div class="card-body">
       <form [formGroup]="datosCorreo">
-        <div *ngIf="loading" class="spinner-border text-dark float-end mb-3" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
+
         <mat-form-field appearance="fill">
           <mat-label>Lista destinatarios</mat-label>
           <mat-select (selectionChange)="seleccionarDestinatarios($event.value)">
@@ -36,7 +34,12 @@
       </form>
       <button mat-raised-button color="primary" class=" float-end mt-2" (click)="envioCorreo()">Enviar</button>
       <button mat-raised-button color="accent" mat-button mat-dialog-close class="float-end mx-2 mt-2">Volver</button>
+
     </div>
+  </div>
+
+  <div *ngIf="loading" class="spinner-border text-dark float-end m-2 " role="status">
+    <span class="visually-hidden">Loading...</span>
   </div>
   <br><br><br>
 </mat-dialog-content>

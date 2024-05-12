@@ -3,6 +3,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from 'src/services/user.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,8 @@ export class LoginComponent {
   constructor(
     private userService: UserService,
     private router: Router,
-    private afAuth: AngularFireAuth
+    private afAuth: AngularFireAuth,
+    private toastr: ToastrService
   ) {
     this.formLogin = new FormGroup({
       email: new FormControl('', Validators.required),
@@ -50,13 +52,29 @@ export class LoginComponent {
       (resp) => {
         // Verificar si la respuesta del servidor tiene ok: true
         if (resp && resp.ok === true) {
-          console.log('Se ha inicializado el servidor correctamente', resp);
+          this.toastr.success(
+            'El envío de email se encuentra disponible',
+            'Servidor Inicializado',
+            { positionClass: 'toast-bottom-right' }
+          );
         } else {
-          console.log('Error al inicializar el servidor', resp);
+          this.toastr.error(
+            'Si el error persiste, comunicarse con el soporte de la aplicación',
+            'Error al inicializar el servidor',
+            {
+              positionClass: 'toast-bottom-right',
+            }
+          );
         }
       },
       (error) => {
-        console.error('Error al inicializar el servidor', error);
+        this.toastr.error(
+          'Si el error persiste, comunicarse con el soporte de la aplicación',
+          'Error al inicializar el servidor',
+          {
+            positionClass: 'toast-bottom-right',
+          }
+        );
       }
     );
   }

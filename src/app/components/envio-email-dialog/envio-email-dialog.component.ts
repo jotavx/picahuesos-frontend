@@ -168,6 +168,7 @@ export class EnvioEmailDialogComponent {
             'Mensaje Enviado',
             { positionClass: 'toast-bottom-right' }
           );
+          this.dialogRef.close();
         } else {
           // Mostrar un mensaje de error si ok: false o no hay respuesta
           this.toastr.error('Hubo un error al enviar el mensaje', 'Error', {

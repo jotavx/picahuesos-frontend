@@ -16,10 +16,10 @@ export class SeleccionAlumnosDialogComponent implements OnInit {
 
   alumnos: any[] = [];
   displayedColumns: string[] = [
+    'seleccionar',
     'nombreCompleto',
     'email',
     'mesAbonado',
-    'seleccionar',
   ];
   dataSource = new MatTableDataSource<any>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
