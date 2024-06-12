@@ -1,4 +1,5 @@
 <app-navbar></app-navbar>
+
 <div class="custom-container mt-5">
   <div class="subtitle">Recordatorios</div>
   <button mat-raised-button color="primary" (click)="openReminderDialog()" class="ms-2 mt-4 fw-bold custom-button"> <i
@@ -22,8 +23,11 @@
         </div>
         <div class="dynamic-article flex-grow-1 no-select">
           <div class="date-display">
-            <div class="day">{{ (reminder.reminderDate | formatDate).day }}</div>
-            <div class="month">{{ (reminder.reminderDate | formatDate).month }}</div>
+            <div class="day">{{ (reminder | formatDate).day }}</div>
+            <div class="month">{{ (reminder | formatDate).month }}</div>
+
+
+
           </div>
           <div class="data-container no-select">
             <br>

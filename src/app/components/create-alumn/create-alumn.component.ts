@@ -28,11 +28,13 @@ export class CreateAlumnComponent implements OnInit {
     'U17',
     'Primera',
   ]; //Define las categorías existentes para su selección en el formulario
+
   titulo = 'Agregar Alumno/a'; // Define un titulo para que sea dinámico, si es editar el titulo sera otro
-  createAlumno: FormGroup; //FormGroup que representa el formulario para crear o editar un alumno.
   submitted = false;
   loading = false;
   id: string | null;
+
+  createAlumno: FormGroup; //FormGroup que representa el formulario para crear o editar un alumno.
 
   constructor(
     private dialogRef: MatDialogRef<CreateAlumnComponent>,
@@ -45,20 +47,13 @@ export class CreateAlumnComponent implements OnInit {
   ) {
     this.createAlumno = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(9)]],
-      fechaNacimiento: ['', [Validators.required, this.fechaValida]],
-      dni: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern('^[0-9]{8,}$'),
-          Validators.minLength(8),
-        ],
-      ],
-      email: ['', [Validators.required, Validators.email]],
+      fechaNacimiento: ['', this.fechaValida],
+      dni: ['', Validators.minLength(8)],
+      email: ['', Validators.email],
       direccion: [''],
-      telefono: ['', Validators.required],
-      categoria: [''],
-      mesAbonado: ['', Validators.required],
+      telefono: [''],
+      categoria: ['', Validators.required],
+      mesAbonado: [''],
       seguroAltaBaja: [''],
       montoInsc: [''],
       fechaMontoInsc: [''],
@@ -77,6 +72,7 @@ export class CreateAlumnComponent implements OnInit {
       permisoImagen: [''],
       seRetiraSolo: [''],
     });
+
     this.id = this.aRoute.snapshot.paramMap.get('id');
   }
 
@@ -109,13 +105,6 @@ export class CreateAlumnComponent implements OnInit {
     return (
       this.createAlumno.get('fechaNacimiento')?.invalid &&
       this.createAlumno.get('fechaNacimiento')?.touched
-    );
-  }
-
-  get ingresarMesAbonado() {
-    return (
-      this.createAlumno.get('mesAbonado')?.invalid &&
-      this.createAlumno.get('mesAbonado')?.touched
     );
   }
 
@@ -161,7 +150,7 @@ export class CreateAlumnComponent implements OnInit {
       mesAbonado: this.createAlumno.value.mesAbonado,
       seguroAltaBaja: this.createAlumno.value.seguroAltaBaja,
       montoInsc: this.createAlumno.value.montoInsc,
-      fechaMontoInsc: this.createAlumno.value.montoInsc ? fechaActual : null,
+      fechaMontoInsc: this.createAlumno.value.fechaMontoInsc || fechaActual,
       mesMarzo: this.createAlumno.value.mesMarzo,
       mesAbril: this.createAlumno.value.mesAbril,
       mesMayo: this.createAlumno.value.mesMayo,
@@ -180,21 +169,22 @@ export class CreateAlumnComponent implements OnInit {
       fechaActualizacion: new Date(),
     };
     this.loading = true;
+    const nombreAlumno = this.createAlumno.value.nombre.toUpperCase();
+    const mensaje = `Se ha creado: ${nombreAlumno}.`;
     this.alumnoService
       .agregarAlumno(alumno)
       .then(() => {
-        this.toastr.success(
-          'El registro se completo correctamente',
-          'Alumno/a Registrado',
-          { positionClass: 'toast-bottom-right' }
-        );
+        this.toastr.success(mensaje, 'Alumno/a Registrado', {
+          positionClass: 'toast-bottom-right',
+        });
         this.loading = false;
-        this.dialogRef.close();
+        // this.dialogRef.close();
       })
       .catch((error) => {
         console.log(error);
         this.loading = false;
       });
+    this.dialogRef.close();
   }
 
   editarAlumno(id: string) {
@@ -210,7 +200,7 @@ export class CreateAlumnComponent implements OnInit {
       mesAbonado: this.createAlumno.value.mesAbonado,
       seguroAltaBaja: this.createAlumno.value.seguroAltaBaja,
       montoInsc: this.createAlumno.value.montoInsc,
-      fechaMontoInsc: this.createAlumno.value.montoInsc ? fechaActual : null,
+      fechaMontoInsc: this.createAlumno.value.fechaMontoInsc || fechaActual,
       mesMarzo: this.createAlumno.value.mesMarzo,
       mesAbril: this.createAlumno.value.mesAbril,
       mesMayo: this.createAlumno.value.mesMayo,
@@ -228,15 +218,22 @@ export class CreateAlumnComponent implements OnInit {
       fechaActualizacion: new Date(),
     };
     this.loading = true;
-    this.alumnoService.actualizarAlumno(id, alumno).then(() => {
-      this.loading = false;
-      this.toastr.info(
-        'El registro fue modificado con exito',
-        'Registro Modificado',
-        { positionClass: 'toast-bottom-right' }
-      );
-      this.dialogRef.close();
-    });
+    const nombreAlumno = this.createAlumno.value.nombre.toUpperCase();
+    const mensaje = `Se ha modificado: ${nombreAlumno}.`;
+    this.alumnoService
+      .actualizarAlumno(id, alumno)
+      .then(() => {
+        this.loading = false;
+        this.toastr.info(mensaje, 'Registro Modificado', {
+          positionClass: 'toast-bottom-right',
+        });
+        //  this.dialogRef.close();
+      })
+      .catch((error) => {
+        console.log(error);
+        this.loading = false;
+      });
+    this.dialogRef.close();
   }
 
   esEditar() {

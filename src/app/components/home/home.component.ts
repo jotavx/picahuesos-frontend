@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ReminderService } from 'src/services/reminder.service';
 import { ReminderDialogComponent } from '../reminder-dialog/reminder-dialog.component';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { Reminder } from '../models/reminder.model';
+import { Reminder } from '../../models/reminder.model';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +12,7 @@ import { Reminder } from '../models/reminder.model';
 })
 export class HomeComponent implements OnInit {
   isVisible = true; //booleano utilizado para controlar la visibilidad de los recordatorios
-  datosReminder: any = []; //arreglo para almacenar los datos de los recordatorios recibidos del servicio
+  datosReminder: Reminder[] = []; //arreglo para almacenar los datos de los recordatorios recibidos del servicio
   constructor(
     public dialog: MatDialog,
     private reminderService: ReminderService

@@ -1,0 +1,10 @@
+<h1 mat-dialog-title>Configuración</h1>
+<div mat-dialog-content>
+  <mat-select [(ngModel)]="selectedServerUrl" name="serverSelect">
+    <mat-option *ngFor="let server of servers" [value]="server.url">{{ server.name }}</mat-option>
+  </mat-select>
+  <div mat-dialog-actions class="float-end">
+    <button mat-raised-button color="accent" mat-button mat-dialog-close>Volver</button>
+    <button mat-raised-button color="primary" style="margin-left: 15px" mat-button mat-dialog-close
+      (click)="changeServer()">Aceptar</button>
+  </div>

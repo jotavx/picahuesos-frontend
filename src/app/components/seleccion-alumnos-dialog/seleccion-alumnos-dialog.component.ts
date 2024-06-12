@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialogRef } from '@angular/material/dialog';
+import { Alumno } from 'src/app/models/alumno.model';
 
 @Component({
   selector: 'app-seleccion-alumnos-dialog',
@@ -12,16 +13,16 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class SeleccionAlumnosDialogComponent implements OnInit {
   listaCorreosSeleccionados: string = '';
-  alumnosSeleccionados: any[] = [];
+  alumnosSeleccionados: Alumno[] = [];
 
-  alumnos: any[] = [];
+  alumnos: Alumno[] = [];
   displayedColumns: string[] = [
     'seleccionar',
     'nombreCompleto',
     'email',
     'mesAbonado',
   ];
-  dataSource = new MatTableDataSource<any>();
+  dataSource = new MatTableDataSource<Alumno>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -75,7 +76,7 @@ export class SeleccionAlumnosDialogComponent implements OnInit {
   }
 
   //Añade o elimina un alumno de la lista de seleccionados basado en la acción del usuario en la interfaz.
-  seleccionarAlumno(event: any, alumno: any) {
+  seleccionarAlumno(event: any, alumno: Alumno) {
     if (event.checked) {
       // Agregar alumno a la lista de seleccionados si está marcado
       this.alumnosSeleccionados.push(alumno);
@@ -110,15 +111,17 @@ export class SeleccionAlumnosDialogComponent implements OnInit {
   }
 
   //Calcula y retorna un color basado en cuánto tiempo ha pasado desde una fecha dada, utilizada para resaltar visualmente esta información en la interfaz.
-  getColorForFechaAbonado(fechaAbonado: Date): string {
-    const hoy = new Date();
-    const fechaAbonadoPlus30Days = new Date(fechaAbonado);
-    fechaAbonadoPlus30Days.setDate(fechaAbonadoPlus30Days.getDate() + 30);
+  getColorForFechaAbonado(fechaAbonadoString: string): string {
+    // Convertir la cadena a un objeto Date
+    const fechaAbonado = new Date(fechaAbonadoString);
 
-    if (hoy > fechaAbonadoPlus30Days) {
-      return 'red'; // Si han pasado más de 30 días, devolvemos rojo
+    const hoy = new Date();
+    const fechaAbonadoDay = fechaAbonado.getDate();
+
+    if (fechaAbonadoDay > 15) {
+      return '#8D2511'; // If the day of the month is greater than 15, return red
     } else {
-      return 'green'; // Si está dentro de los 30 días, devolvemos verde
+      return '#376D06'; // Otherwise, return green
     }
   }
 }

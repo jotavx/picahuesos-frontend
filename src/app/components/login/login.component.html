@@ -20,7 +20,7 @@
                 </div> -->
                 <mat-form-field class="full-width">
                   <mat-label>Ingresa usuario</mat-label>
-                  <input matInput formControlName="email">
+                  <input matInput formControlName="email" type="email">
                 </mat-form-field>
                 <mat-form-field class="full-width">
                   <mat-label>Ingresa contraseña</mat-label>
@@ -35,8 +35,11 @@
                 <small *ngIf="loginError" class="text-danger">Usuario o contraseña
                   incorrectos.</small>
                 <br>
-                <button mat-raised-button color="primary" type="submit" class="btn btn-primary mt-3">Iniciar
+                <button mat-raised-button color="primary" type="submit" class="btn btn-primary mt-3"
+                  [disabled]="formLogin.invalid">Iniciar
                   Sesión</button>
+                <br><br>
+                <!-- <a mat-stroked-button color="accent" routerLink="/reset-password">¿Olvidaste tu contraseña?</a> -->
               </form>
             </div>
           </div>

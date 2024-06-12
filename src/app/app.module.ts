@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AngularFireModule } from '@angular/fire/compat';
-
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
@@ -22,13 +21,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatCardModule } from '@angular/material/card';
 
 import { AppComponent } from './app.component';
 import { ListAlumnosComponent } from './components/list-alumnos/list-alumnos.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { environment } from 'src/environments/enviroment';
+import { environment } from 'src/environments/environment';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
-import { EnvioEmailComponent } from './components/envio-email/envio-email.component';
 import { SeleccionAlumnosDialogComponent } from './components/seleccion-alumnos-dialog/seleccion-alumnos-dialog.component';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
@@ -45,6 +44,10 @@ import { CierreDeCajaComponent } from './components/cierre-de-caja/cierre-de-caj
 import { BajasComponent } from './components/bajas/bajas.component';
 import { ConfirmBajaDialogComponent } from './components/confirm-baja-dialog/confirm-baja-dialog.component';
 import { EnvioEmailDialogComponent } from './components/envio-email-dialog/envio-email-dialog.component';
+import { ConfigDialogComponent } from './components/config-dialog/config-dialog.component';
+import { OfflineMessageComponent } from './components/offline-message/offline-message.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { ConfirmEnviadosDialogComponent } from './components/confirm-enviados-dialog/confirm-enviados-dialog.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +55,6 @@ import { EnvioEmailDialogComponent } from './components/envio-email-dialog/envio
     ListAlumnosComponent,
     NavbarComponent,
     ConfirmDialogComponent,
-    EnvioEmailComponent,
     SeleccionAlumnosDialogComponent,
     LoginComponent,
     LogoutDialogComponent,
@@ -67,6 +69,10 @@ import { EnvioEmailDialogComponent } from './components/envio-email-dialog/envio
     BajasComponent,
     ConfirmBajaDialogComponent,
     EnvioEmailDialogComponent,
+    ConfigDialogComponent,
+    OfflineMessageComponent,
+    ResetPasswordComponent,
+    ConfirmEnviadosDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -91,6 +97,7 @@ import { EnvioEmailDialogComponent } from './components/envio-email-dialog/envio
     MatIconModule,
     MatMenuModule,
     FormsModule,
+    MatCardModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
   ],

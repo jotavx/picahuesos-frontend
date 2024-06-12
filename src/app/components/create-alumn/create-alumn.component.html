@@ -1,4 +1,167 @@
-<h2 mat-dialog-title class="text-center ">{{titulo}}</h2>
+<h2 mat-dialog-title class="text-center">{{titulo}}</h2>
+<mat-dialog-content>
+  <small *ngIf="submitted && createAlumno.invalid" class="text-danger fw-bold text-uppercase">Faltan campos
+    obligatorios por completar ( * )</small>
+  <div *ngIf="loading" class="spinner-border float-end" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+  <form [formGroup]="createAlumno">
+    <mat-tab-group>
+      <mat-tab label="Datos Alumno/a">
+        <div class="flex-row">
+          <div class="flex-column">
+            <h5 class="text-start mx-1 mt-1 insc">Nombre y Apellido <small class="text-danger">*</small></h5>
+            <input type="text" class="form-control form-control-lg mt-1" formControlName="nombre"
+              [class.is-invalid]="nombreNoValido">
+            <small *ngIf="nombreNoValido" class="text-danger">Ingrese Nombre y Apellido</small>
+          </div>
+          <div class="flex-column">
+            <h5 class="text-start mx-1 mt-1  insc">Mes Abonado</h5>
+            <input type="date" class="form-control form-control-lg mt-1 mes-abonado" formControlName="mesAbonado">
+          </div>
+        </div>
+        <div class="flex-row">
+          <div class="flex-column">
+            <h5 class="text-start mx-1 mt-1 insc">Email</h5>
+            <input type="email" id="correo" class="form-control form-control-lg mt-1" formControlName="email"
+              [class.is-invalid]="emailNoValido">
+            <small *ngIf="emailNoValido" class="text-danger">Ingrese un email válido</small>
+          </div>
+          <div class="flex-column">
+            <h5 class="text-start mx-1 mt-1 insc">Domicilio</h5>
+            <input type="text" class="form-control form-control-lg mt-1" formControlName="direccion">
+          </div>
+        </div>
+        <div class="flex-row">
+          <div class="flex-column">
+            <h5 class="text-start mx-1 mt-1">DNI </h5>
+            <input type="text" class="form-control form-control-lg mt-1" formControlName="dni"
+              [class.is-invalid]="dniNoValido">
+            <small *ngIf="dniNoValido" class="text-danger">DNI no válido, ingrese el DNI sin puntos ni
+              espacios</small>
+          </div>
+          <div class="flex-column">
+            <h5 class="text-start mx-1 mt-1 insc">Fecha de Nacimiento </h5>
+            <input type="date" class="form-control form-control-lg mt-1" formControlName="fechaNacimiento"
+              [class.is-invalid]="fechaNoValido">
+            <small *ngIf="fechaNoValido" class="text-danger">Ingrese una fecha válida</small>
+          </div>
+        </div>
+        <div class="flex-row">
+          <div class="flex-column">
+            <h5 class="text-start mx-1 mt-1 insc">Teléfono </h5>
+            <input type="text" class="form-control form-control-lg mt-1" formControlName="telefono">
+          </div>
+          <div class="flex-column">
+            <h5 class="text-start mx-1 mt-1 insc">Categoría <small class="text-danger">*</small></h5>
+            <select class="form-select" id="categoriaSelect" formControlName="categoria">
+              <option value="">Seleccione una categoría...</option>
+              <option *ngFor="let categoria of categorias" [value]="categoria">{{ categoria }}</option>
+            </select>
+          </div>
+          <div class="flex-column">
+            <h5 class="text-start mx-1 mt-1 insc">Tutorxs Responsables</h5>
+            <input type="text" class="form-control form-control-lg mt-1" formControlName="tutoresResponsables">
+          </div>
+        </div>
+        <div class="flex-row">
+          <div class="flex-column">
+            <h5 class="text-start mx-1 mt-1 insc">Seguro</h5>
+            <input type="text" class="form-control form-control-lg mt-1" formControlName="seguroAltaBaja">
+          </div>
+          <div class="flex-column">
+            <h5 class="text-start mx-1 mt-1 insc">Permiso Imagen</h5>
+            <input type="text" class="form-control form-control-lg mt-1" formControlName="permisoImagen">
+          </div>
+          <div class="flex-column">
+            <h5 class="text-start mx-1 mt-1  insc">Se retira solx</h5>
+            <input type="text" class="form-control form-control-lg mt-1" formControlName="seRetiraSolo">
+          </div>
+        </div>
+        <div class="flex-row">
+          <div class="flex-column">
+            <h5 class="text-start mx-1 mt-1 insc">Observaciones</h5>
+            <textarea class="form-control non-resizable-textarea custom-width" rows="3"
+              formControlName="observacionesAlumno"></textarea>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="Historial de pagos">
+        <small class="medios-pago">(E): Efectivo | (MP) Mercado Pago</small>
+        <div class="flex-row">
+          <div class="flex-column col-1">
+            <h5 class="text-start mx-1 mt-1 insc">Inscripción</h5>
+            <input type="text" class="form-control form-control-lg mt-1 " formControlName="montoInsc"
+              placeholder="$0.000 (MP) | (E)">
+          </div>
+          <div class="flex-column">
+            <h5 class="text-start mx-1 mt-1 insc">Fecha Inscripción</h5>
+            <input type="date" id="fechaMontoInsc" class="form-control form-control-lg mt-1"
+              formControlName="fechaMontoInsc">
+          </div>
+        </div>
+        <div class="flex-row">
+          <div class="flex-column">
+            <h5 class="text-start mx-1 mt-1 insc insc">Marzo</h5>
+            <input type="text" class="form-control form-control-lg mt-1" formControlName="mesMarzo"
+              placeholder="$0.000 (MP) | (E)">
+          </div>
+          <div class="flex-column">
+            <h5 class="text-start mx-1 mt-1 insc insc">Abril</h5>
+            <input type="text" class="form-control form-control-lg mt-1" formControlName="mesAbril"
+              placeholder="$0.000 (MP) | (E)">
+          </div>
+          <div class="flex-column">
+            <h5 class="text-start mx-1 mt-1 insc insc">Mayo</h5>
+            <input type="text" class="form-control form-control-lg mt-1" formControlName="mesMayo"
+              placeholder="$0.000 (MP) | (E)">
+          </div>
+          <div class="flex-column">
+            <h5 class="text-start mx-1 mt-1 insc insc">Junio</h5>
+            <input type="text" class="form-control form-control-lg mt-1" formControlName="mesJunio"
+              placeholder="$0.000 (MP) | (E)">
+          </div>
+          <div class="flex-column">
+            <h5 class="text-start mx-1 mt-1 insc insc">Julio</h5>
+            <input type="text" class="form-control form-control-lg mt-1" formControlName="mesJulio"
+              placeholder="$0.000 (MP) | (E)">
+          </div>
+          <div class="flex-column">
+            <h5 class="text-start mx-1 mt-1 insc insc">Agosto</h5>
+            <input type="text" class="form-control form-control-lg mt-1" formControlName="mesAgosto"
+              placeholder="$0.000 (MP) | (E)">
+          </div>
+          <div class="flex-column">
+            <h5 class="text-start mx-1 mt-1 insc insc">Septiembre</h5>
+            <input type="text" class="form-control form-control-lg mt-1" formControlName="mesSeptiembre"
+              placeholder="$0.000 (MP) | (E)">
+          </div>
+          <div class="flex-column">
+            <h5 class="text-start mx-1 mt-1 insc insc">Octubre</h5>
+            <input type="text" class="form-control form-control-lg mt-1" formControlName="mesOctubre"
+              placeholder="$0.000 (MP) | (E)">
+          </div>
+          <div class="flex-column">
+            <h5 class="text-start mx-1 mt-1 insc insc">Noviembre</h5>
+            <input type="text" class="form-control form-control-lg mt-1" formControlName="mesNoviembre"
+              placeholder="$0.000 (MP) | (E)">
+          </div>
+          <div class="flex-column">
+            <h5 class="text-start mx-1 mt-1 insc insc">Diciembre</h5>
+            <input type="text" class="form-control form-control-lg mt-1" formControlName="mesDiciembre"
+              placeholder="$0.000 (MP) | (E)">
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="accent" mat-dialog-close>Volver</button>
+  <button mat-raised-button color="primary" type="submit" class="" (click)="agregarEditarAlumno()">Aplicar</button>
+</mat-dialog-actions>
+
+<!-- <h2 mat-dialog-title class="text-center ">{{titulo}}</h2>
 <mat-dialog-content>
   <small *ngIf="submitted && createAlumno.invalid" class="text-danger fw-bold text-uppercase">Faltan campos
     obligatorios por completar ( * )</small>
@@ -14,15 +177,14 @@
         <small *ngIf="nombreNoValido" class="text-danger">Ingrese Nombre y Apellido</small>
       </div>
       <div class="flex-column">
-        <h5 class="text-start mx-1 mt-1">Fecha de Nacimiento <small class="text-danger">*</small></h5>
-        <input type="date" class="form-control form-control-lg mt-1" formControlName="fechaNacimiento"
-          [class.is-invalid]="fechaNoValido">
-        <small *ngIf="fechaNoValido" class="text-danger">Ingrese una fecha válida</small>
+        <h5 class="text-start mx-1 mt-1 ">Mes Abonado</h5>
+        <input type="date" class="form-control form-control-lg mt-1 mes-abonado" formControlName="mesAbonado">
       </div>
+
     </div>
     <div class="flex-row">
       <div class="flex-column">
-        <h5 class="text-start mx-1 mt-1">Email <small class="text-danger">*</small></h5>
+        <h5 class="text-start mx-1 mt-1">Email</h5>
         <input type="email" id="correo" class="form-control form-control-lg mt-1" formControlName="email"
           [class.is-invalid]="emailNoValido">
         <small *ngIf="emailNoValido" class="text-danger">Ingrese un email válido</small>
@@ -34,25 +196,23 @@
     </div>
     <div class="flex-row">
       <div class="flex-column">
-        <h5 class="text-start mx-1 mt-1">DNI <small class="text-danger">*</small></h5>
-        <input type="text" class="form-control form-control-lg mt-1" formControlName="dni"
-          [class.is-invalid]="dniNoValido">
-        <small *ngIf="dniNoValido" class="text-danger">DNI no válido, ingrese el DNI sin puntos ni
-          espacios</small>
+        <h5 class="text-start mx-1 mt-1">DNI </h5>
+        <input type="text" class="form-control form-control-lg mt-1" formControlName="dni">
       </div>
       <div class="flex-column">
-        <h5 class="text-start mx-1 mt-1 ">Mes Abonado<small class="text-danger">*</small></h5>
-        <input type="date" class="form-control form-control-lg mt-1 mes-abonado" formControlName="mesAbonado"><small
-          *ngIf="ingresarMesAbonado" class="text-danger">Ingrese una fecha</small>
+        <h5 class="text-start mx-1 mt-1">Fecha de Nacimiento </h5>
+        <input type="date" class="form-control form-control-lg mt-1" formControlName="fechaNacimiento"
+          [class.is-invalid]="fechaNoValido">
+        <small *ngIf="fechaNoValido" class="text-danger">Ingrese una fecha válida</small>
       </div>
     </div>
     <div class="flex-row">
       <div class="flex-column">
-        <h5 class="text-start mx-1 mt-1">Teléfono <small class="text-danger">*</small></h5>
+        <h5 class="text-start mx-1 mt-1">Teléfono </h5>
         <input type="text" class="form-control form-control-lg mt-1" formControlName="telefono">
       </div>
       <div class="flex-column">
-        <h5 class="text-start mx-1 mt-1">Categoría <small class="text-danger">*</small></h5>
+        <h5 class="text-start mx-1 mt-1">Categoría </h5>
         <select class="form-select" id="categoriaSelect" formControlName="categoria">
           <option value="">Seleccione una categoría...</option>
           <option *ngFor="let categoria of categorias" [value]="categoria">{{ categoria }}</option>
@@ -96,11 +256,22 @@
             Mercado
             Pago</small>
           <div class="accordion-body">
-            <div class="flex-column col-1">
-              <h5 class="text-start mx-1 mt-1 ">Inscripción</h5>
-              <input type="text" class="form-control form-control-lg mt-1 " formControlName="montoInsc"
-                placeholder="$0.000 (MP) | (E)">
+            <div class="flex-row">
+              <div class="flex-column col-1">
+                <h5 class="text-start mx-1 mt-1 ">Inscripción</h5>
+                <input type="text" class="form-control form-control-lg mt-1 " formControlName="montoInsc"
+                  placeholder="$0.000 (MP) | (E)">
+              </div>
+
+
+
+              <div class="flex-column">
+                <h5 class="text-start mx-1 mt-1 ">Fecha Inscripción</h5>
+                <input type="date" id="fechaMontoInsc" class="form-control form-control-lg mt-1"
+                  formControlName="fechaMontoInsc">
+              </div>
             </div>
+
             <div class="flex-row">
               <div class="flex-column">
                 <h5 class="text-start mx-1 mt-1">Marzo</h5>
@@ -162,4 +333,4 @@
 <mat-dialog-actions align="end">
   <button mat-raised-button color="accent" mat-dialog-close>Volver</button>
   <button mat-raised-button color="primary" type="submit" class="" (click)="agregarEditarAlumno()">Aplicar</button>
-</mat-dialog-actions>
+</mat-dialog-actions> -->

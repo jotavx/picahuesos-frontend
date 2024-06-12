@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { Alumno } from 'src/app/models/alumno.model';
 
 @Component({
   selector: 'app-bajas',
@@ -11,8 +12,9 @@ import { MatSort } from '@angular/material/sort';
   styleUrls: ['./bajas.component.css'],
 })
 export class BajasComponent {
-  bajasAlumnos: any[] = []; //Un arreglo que almacenará los datos de alumnos que han sido dados de baja.
+  bajasAlumnos: Alumno[] = []; //Un arreglo que almacenará los datos de alumnos que han sido dados de baja.
   displayedColumns: string[] = [
+    'acciones',
     'nombreCompleto',
     'dni',
     'fechaNacimiento',
@@ -21,9 +23,8 @@ export class BajasComponent {
     'email',
     'seguroAltaBaja',
     'telefono',
-    'acciones',
   ];
-  dataSource = new MatTableDataSource<any>();
+  dataSource = new MatTableDataSource<Alumno>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   constructor(

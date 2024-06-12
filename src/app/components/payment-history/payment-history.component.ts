@@ -1,19 +1,23 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { AlumnoService } from 'src/services/alumno.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import * as XLSX from 'xlsx';
+import { Alumno } from 'src/app/models/alumno.model';
 
 @Component({
   selector: 'app-payment-history',
   templateUrl: './payment-history.component.html',
   styleUrls: ['./payment-history.component.css'],
 })
-export class PaymentHistoryComponent implements OnInit {
+export class PaymentHistoryComponent implements OnInit, AfterViewInit {
   fileName = 'HistorialPagos.xlsx';
+
   selectedCategory: string = 'Mosquitos';
-  alumnos: any[] = [];
+
+  alumnos: Alumno[] = [];
+
   displayedColumns: string[] = [
     'nombreCompleto',
     'montoInsc',
@@ -29,10 +33,7 @@ export class PaymentHistoryComponent implements OnInit {
     'mesDiciembre',
   ];
 
-  mesMarzo: { categoria: string; totalMP: number; totalE: number }[] = [];
-  mesAbril: { categoria: string; totalMP: number; totalE: number }[] = [];
-
-  dataSource = new MatTableDataSource<any>();
+  dataSource = new MatTableDataSource<Alumno>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -79,5 +80,20 @@ export class PaymentHistoryComponent implements OnInit {
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
     XLSX.writeFile(wb, this.fileName);
+  }
+
+  //NEW
+  formatFecha(fecha: any): string {
+    let date;
+    if (typeof fecha === 'string') {
+      date = new Date(fecha);
+    } else if (fecha.seconds && fecha.nanoseconds) {
+      date = new Date(fecha.seconds * 1000 + fecha.nanoseconds / 1000000);
+    } else {
+      return 'Invalid Date';
+    }
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear().toString().slice(-2);
+    return `${month.toString().padStart(2, '0')}/${year}`;
   }
 }

@@ -22,7 +22,7 @@ export class LoginComponent {
     private toastr: ToastrService
   ) {
     this.formLogin = new FormGroup({
-      email: new FormControl('', Validators.required),
+      email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', Validators.required),
     }); //Inicializa formLogin con email y password, ambos con validaciones requeridas.
   }
@@ -44,7 +44,7 @@ export class LoginComponent {
   // Se utiliza para inicializar el servidor de envio de email
   envioStart() {
     const correoParams = {
-      email: 'jotaviarruel97@gmail.com', // Destinatario
+      email: 'jvcode7@gmail.com', // Destinatario
       asunto: 'Servidor Inicializado',
       mensaje: 'Se ha iniciado correctamente.',
     };

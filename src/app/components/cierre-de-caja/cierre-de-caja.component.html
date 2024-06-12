@@ -10,7 +10,7 @@
             <mat-table [dataSource]="datosMensuales[mes.clave].categorias" class="mat-elevation-z8">
               <ng-container matColumnDef="categoria">
                 <mat-header-cell *matHeaderCellDef> Categoria </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.categoria}} </mat-cell>
+                <mat-cell *matCellDef="let element" class="uppercase"> {{element.categoria}} </mat-cell>
               </ng-container>
               <ng-container matColumnDef="totalMP">
                 <mat-header-cell *matHeaderCellDef> MP</mat-header-cell>
@@ -61,4 +61,4 @@
     </mat-tab-group>
   </div>
   <br><br><br><br><br>
-</div>z
+</div>

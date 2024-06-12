@@ -1,37 +1,56 @@
 <mat-dialog-content>
-  <span class="text-primary fw-bold ">Enviar comprobante de pago: <br></span>
-  <small class="text-secondary"> {{alumnoNombre}}</small>
-  <div class="mt-3">
-    <input type="checkbox" id="checkboxInscripcion" [(ngModel)]="incluyeInscripcion">
-    <label for="checkboxInscripcion" class="ms-2"> Inscripción:</label>
-    <small class="text-primary text-opacity-75" *ngIf="inscripcion"> {{ inscripcion }}</small>
+  <span class="title mat-title">Enviar comprobante de pago: <br></span>
+  <small class="text-secondary mat-subheading-2"> {{alumnoNombre}}<br></small>
+  <div class="mt-3 d-flex align-items-center">
+    <mat-checkbox [(ngModel)]="incluyeInscripcion" id="checkboxInscripcion" class="fw-bold">
+      <span class="fw-bold"> Inscripción:</span>
+    </mat-checkbox>
+    <small class="fw-bold ms-2 me-2" *ngIf="inscripcion" style="color: rgb(127, 127, 127);">{{ inscripcion }}</small>
     <br>
+    <div *ngIf="comprobantesEnviados">
+      <small *ngIf="comprobantesEnviados.inscripcion">
+        <i matTooltip="Enviado" class="fa-solid fa-envelope-circle-check" style="color: #005eff;"
+          (click)="confirmarEliminacionComprobante('inscripcion')"></i>
+      </small>
+    </div>
     <small *ngIf="incluyeInscripcion && !inscripcion" class="text-danger sin-valor">
       No has ingresado un monto para la inscripción.
     </small>
   </div>
-  <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// NUEVO-->
-  <div *ngFor="let mes of meses" class="mt-3">
-    <input type="checkbox" [id]="mes" [(ngModel)]="mesesSeleccionados[mes]">
-    <label [for]="mes" class="ms-2"> {{mes}}: </label>
-    <small class="text-success" *ngIf="valoresMes[mes]"> {{ valoresMes[mes] }}</small>
-    <!-- Añade esta línea para mostrar un mensaje de error si el mes está seleccionado pero el monto es 0 o null -->
+  <div class="custom">
+
+
+
     <br>
-    <small *ngIf="mesesSeleccionados[mes] && !valoresMes[mes]" class="text-danger sin-valor">
-      No has ingresado un monto para {{mes}}.
-    </small>
+    <div *ngFor="let mes of meses" class="mt-3 meses">
+
+      <mat-checkbox [(ngModel)]="mesesSeleccionados[mes]" [id]="mes">
+        <span class="fw-bold me-2">{{ mes }}:</span>
+      </mat-checkbox>
+      <small *ngIf="comprobantesEnviados[mes]">
+        <i matTooltip="Enviado" class="fa-solid fa-envelope-circle-check" style="color: #005eff;"
+          (click)="confirmarEliminacionComprobante(mes)"></i>
+      </small>
+      <div class="d-flex align-items-center">
+        <mat-form-field class="example-full-width ms-2">
+          <input matInput [(ngModel)]="valoresMes[mes]" placeholder="Ingrese el monto para {{ mes }}"
+            (keydown)="$event.stopPropagation()">
+        </mat-form-field>
+
+        <button mat-icon-button (click)="actualizarMontoMes(mes, valoresMes[mes])">
+          <mat-icon>save</mat-icon>
+        </button>
+        <mat-icon *ngIf="mesGuardado[mes]" style="color: rgb(6, 93, 6);">check</mat-icon>
+
+      </div>
+      <small *ngIf="mesesSeleccionados[mes] && !valoresMes[mes]" class="text-danger sin-valor">
+        No has ingresado un monto para {{ mes }}.
+      </small>
+    </div>
   </div>
-  <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// NUEVO-->
 </mat-dialog-content>
+
 <mat-dialog-actions align="end">
-  <button mat-raised-button color="accent" mat-dialog-close class="mt-3">Cancelar</button>
+  <button mat-raised-button color="accent" mat-dialog-close class="mt-3">Volver</button>
   <button mat-raised-button color="primary" (click)="enviarCorreoComprobante()" class="mt-3">Enviar Comprobante</button>
-
 </mat-dialog-actions>
-
-<!-- ANTERIOR
-      <div *ngFor="let mes of meses" class="mt-3">
-    <input type="checkbox" [id]="mes" [(ngModel)]="mesesSeleccionados[mes]">
-    <label [for]="mes" class="ms-2 "> {{mes}}</label>
-  </div>
-    -->

@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { ReminderService } from 'src/services/reminder.service';
 
 @Component({
@@ -20,11 +21,13 @@ export class ReminderDialogComponent implements OnInit {
   submitted = false;
   createReminder: FormGroup;
   id: string | null;
+
   constructor(
     private dialogRef: MatDialogRef<ReminderDialogComponent>,
     private reminderService: ReminderService,
     private fb: FormBuilder,
     private aRoute: ActivatedRoute,
+    private toastr: ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.createReminder = this.fb.group({
@@ -43,38 +46,42 @@ export class ReminderDialogComponent implements OnInit {
     this.forEdit();
   }
 
-  buildReminder() {
+  async buildReminder() {
     const content = this.createReminder.value;
-    this.loading = true;
-    this.reminderService
-      .buildContent(content)
-      .then(() => {
-        console.log('El registro se completo correctamente');
-        this.loading = false;
-        this.dialogRef.close();
-      })
-      .catch((error) => {
-        console.log(error);
+    this.dialogRef.close();
+    try {
+      await this.reminderService.buildContent(content);
+      this.toastr.success(
+        'El recordatorio fue creado con éxito',
+        'Recordatorio Creado',
+        { positionClass: 'toast-bottom-right' }
+      );
+    } catch (error) {
+      this.toastr.error('Hubo un error al crear el recordatorio', 'Error', {
+        positionClass: 'toast-bottom-right',
       });
+    }
   }
 
-  editReminder(id: string) {
+  async editReminder(id: string) {
     const content: any = {
       reminderTitle: this.createReminder.value.reminderTitle,
       reminderDate: this.createReminder.value.reminderDate,
       reminderDescription: this.createReminder.value.reminderDescription,
     };
-    this.loading = true;
-    this.reminderService
-      .editContent(id, content)
-      .then((resp) => {
-        console.log(resp);
-        this.loading = false;
-        this.dialogRef.close();
-      })
-      .catch((error) => {
-        console.log(error);
+    this.dialogRef.close();
+    try {
+      await this.reminderService.editContent(id, content);
+      this.toastr.info(
+        'El recordatorio fue modificado con éxito',
+        'Recordatorio Modificado',
+        { positionClass: 'toast-bottom-right' }
+      );
+    } catch (error) {
+      this.toastr.error('Hubo un error al modificar el recordatorio', 'Error', {
+        positionClass: 'toast-bottom-right',
       });
+    }
   }
 
   buildOrEditReminder() {

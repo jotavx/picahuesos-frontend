@@ -2,7 +2,17 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { AlumnoService } from 'src/services/alumno.service';
 import { UserService } from 'src/services/user.service';
 import { ToastrService } from 'ngx-toastr';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatDialog,
+} from '@angular/material/dialog';
+import { ConfirmEnviadosDialogComponent } from '../confirm-enviados-dialog/confirm-enviados-dialog.component';
+
+interface ComprobantesEnviados {
+  inscripcion: boolean;
+  [key: string]: boolean;
+}
 
 @Component({
   selector: 'app-envio-comprobante',
@@ -10,11 +20,15 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./envio-comprobante.component.css'],
 })
 export class EnvioComprobanteComponent implements OnInit {
-  // Variables para almacenar información del alumno y el monto de inscripción.
   alumnoNombre: string = '';
   alumnoEmail: string = '';
   inscripcion: number = 0;
-  //Array que contiene los meses del año para los que se puede registrar un pago.
+  mesGuardado: { [mes: string]: boolean } = {};
+  valoresMes: { [mes: string]: number } = {};
+  mesesSeleccionados: { [mes: string]: boolean } = {};
+  comprobantesEnviados: ComprobantesEnviados = { inscripcion: false };
+  incluyeInscripcion: boolean = false;
+
   meses = [
     'Marzo',
     'Abril',
@@ -27,38 +41,108 @@ export class EnvioComprobanteComponent implements OnInit {
     'Noviembre',
     'Diciembre',
   ];
-  valoresMes: { [mes: string]: number } = {}; //Un objeto que mapea cada mes a un valor numérico de pago.
-  mesesSeleccionados: { [mes: string]: boolean } = {}; // Un objeto para rastrear qué meses han sido seleccionados para el pago.
-  incluyeInscripcion: boolean = false; //Booleano para saber si se incluye el pago de la inscripción en el comprobante.
 
   constructor(
     private alumnoService: AlumnoService,
     private toastr: ToastrService,
     private userService: UserService,
     public dialogRef: MatDialogRef<EnvioComprobanteComponent>,
+    public dialog: MatDialog, /////////////////////////////////////// NEW
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
   ngOnInit(): void {
-    // Realiza una llamada al servicio AlumnoService para obtener los datos del alumno. Se suscribe a la respuesta y maneja los datos del alumno, ajustando los estados valoresMes y mesesSeleccionados
-
     this.alumnoService.getAlumno(this.data.id).subscribe((resultado) => {
       const alumno = resultado.payload.data();
       this.alumnoNombre = alumno.nombre;
       this.alumnoEmail = alumno.email;
       this.inscripcion = alumno.montoInsc;
+      this.comprobantesEnviados = alumno.comprobantesEnviados || {
+        inscripcion: false,
+      };
       this.meses.forEach((mes) => {
         this.mesesSeleccionados[mes] = false;
         this.valoresMes[mes] = alumno[`mes${mes}`];
+        this.comprobantesEnviados[mes] =
+          this.comprobantesEnviados[mes] || false;
       });
     });
   }
 
+  /////////////////////////////////////// NEW
+  confirmarEliminacionComprobante(mes: string): void {
+    const dialogRef = this.dialog.open(ConfirmEnviadosDialogComponent, {
+      width: '450px',
+      data: { mes },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        this.eliminarComprobante(mes);
+      }
+    });
+  }
+
+  // Method to delete the comprobante
+  eliminarComprobante(mes: string): void {
+    this.alumnoService
+      .actualizarComprobanteEnviado(this.data.id, mes, false)
+      .then(() => {
+        this.toastr.success(
+          `Comprobante de ${mes} eliminado exitosamente.`,
+          'Eliminación Exitosa',
+          {
+            positionClass: 'toast-bottom-right',
+          }
+        );
+
+        this.comprobantesEnviados[mes] = false; // Update the local state
+      })
+      .catch((error) => {
+        this.toastr.error(
+          'Se ha producido un error al eliminar el comprobante.',
+          'Error de Eliminación',
+          {
+            positionClass: 'toast-bottom-right',
+          }
+        );
+      });
+  }
+  /////////////////////////////////////// NEW
+
+  actualizarMontoMes(mes: string, monto: number): void {
+    this.alumnoService.actualizarMontoMes(this.data.id, mes, monto).then(
+      () => {
+        this.mesGuardado[mes] = true;
+      },
+      (error) => {
+        this.toastr.error(
+          `Error al actualizar el monto para ${mes}.`,
+          'Error de Actualización',
+          {
+            positionClass: 'toast-bottom-right',
+          }
+        );
+      }
+    );
+  }
   enviarCorreoComprobante() {
-    // Bandera para controlar si todos los meses seleccionados tienen monto
+    const alMenosUnMesSeleccionado = Object.values(
+      this.mesesSeleccionados
+    ).some((mes) => mes);
+    const inscripcionSeleccionada = this.incluyeInscripcion;
+
+    if (!alMenosUnMesSeleccionado && !inscripcionSeleccionada) {
+      this.toastr.error(
+        'Debes seleccionar al menos un mes o la inscripción para enviar el comprobante.',
+        'Se ha producido un error',
+        { positionClass: 'toast-bottom-right' }
+      );
+      return;
+    }
+
     let todosLosMontosValidos = true;
 
-    // Verifica que cada mes seleccionado tenga un monto válido
     this.meses.forEach((mes) => {
       if (
         this.mesesSeleccionados[mes] &&
@@ -75,28 +159,54 @@ export class EnvioComprobanteComponent implements OnInit {
       todosLosMontosValidos = false;
     }
 
-    // Si alguno de los montos no es válido, muestra un mensaje de error y detén la ejecución
     if (!todosLosMontosValidos) {
       this.toastr.error(
         'Algunos de los meses seleccionados no tienen un monto válido.',
-        'Error',
+        'Se ha producido un error',
         {
           positionClass: 'toast-bottom-right',
         }
       );
       return;
     }
-    // Crea un mensaje de correo electrónico listando todos los pagos registrados por mes y para la inscripción, si corresponde.
-    const email = this.alumnoEmail;
-    let mensaje = 'Hola Alumnx! \n\n';
 
-    if (this.incluyeInscripcion) {
-      mensaje += `Se ha registrado el pago de inscripción anual. \nMonto de inscripción: ${this.inscripcion}\n\n`;
+    if (this.incluyeInscripcion && this.comprobantesEnviados.inscripcion) {
+      this.toastr.warning(
+        'El comprobante de inscripción ya ha sido enviado.',
+        'Advertencia',
+        { positionClass: 'toast-bottom-right' }
+      );
+      return;
     }
 
+    // Verificar si algún mes seleccionado ya tiene un comprobante enviado
+    const mesesConComprobantesEnviados = this.meses.filter(
+      (mes) => this.mesesSeleccionados[mes] && this.comprobantesEnviados[mes]
+    );
+
+    if (mesesConComprobantesEnviados.length > 0) {
+      this.toastr.warning(
+        `El comprobante de pago para ${mesesConComprobantesEnviados.join(
+          ', '
+        )} ya ha sido enviado.`,
+        'Advertencia',
+        { positionClass: 'toast-bottom-right' }
+      );
+      return;
+    }
+
+    const email = this.alumnoEmail;
+    let mensaje = 'Hola. ';
+
+    if (this.incluyeInscripcion) {
+      mensaje += `Se ha registrado el pago de inscripción anual. \nIMPORTE ABONADO: ${this.inscripcion}\n\n`;
+    }
+
+    const mesesEnviados: any = [];
     this.meses.forEach((mes) => {
       if (this.mesesSeleccionados[mes]) {
-        mensaje += `Se ha registrado el pago del mes: ${mes}. \nMonto Abono: ${this.valoresMes[mes]}\n\n`;
+        mensaje += `Se ha registrado el pago de tu cuota del mes de ${mes}. \nIMPORTE ABONADO: ${this.valoresMes[mes]}\n\n`;
+        mesesEnviados.push(mes);
       }
     });
 
@@ -109,20 +219,19 @@ export class EnvioComprobanteComponent implements OnInit {
       mensaje: mensaje,
     };
 
-    //Utiliza UserService para enviar el correo electrónico, suscribiéndose al resultado y mostrando una notificación de éxito o error según el caso
     this.userService.enviarCorreo(correoParams).subscribe(
       (resp) => {
         if (resp && resp.ok === true) {
-          // Mensaje de éxito
+          const mesesEnviadosStr = mesesEnviados.join(', ');
           this.toastr.success(
-            'Se ha enviado correctamente',
+            `Se ha enviado correctamente el comprobante para ${this.alumnoNombre}.`,
             'Email de Pago Registrado',
             { positionClass: 'toast-bottom-right' }
           );
+          this.guardarComprobantes();
         } else {
-          // Mensaje de error
           this.toastr.error(
-            'Se ha producido un error',
+            'Se ha producido un error, verifique el email del Alumno/a',
             'Email de Comprobante de Pago',
             {
               positionClass: 'toast-bottom-right',
@@ -141,6 +250,44 @@ export class EnvioComprobanteComponent implements OnInit {
       }
     );
     this.dialogRef.close();
-    //Finalmente, cierra el diálogo una vez que el correo es enviado o si se encuentra un error.
+  }
+
+  guardarComprobantes() {
+    if (this.incluyeInscripcion) {
+      this.alumnoService.actualizarComprobanteEnviado(
+        this.data.id,
+        'inscripcion',
+        true
+      );
+    }
+
+    this.meses.forEach((mes) => {
+      if (this.mesesSeleccionados[mes]) {
+        this.alumnoService.actualizarComprobanteEnviado(
+          this.data.id,
+          mes,
+          true
+        );
+      }
+    });
+    this.guardarMeses();
+  }
+
+  guardarMeses() {
+    // Guardar los datos de los meses en la base de datos
+    Object.keys(this.mesesSeleccionados).forEach((mes) => {
+      if (this.mesesSeleccionados[mes]) {
+        this.alumnoService
+          .actualizarMontoMes(this.data.id, mes, this.valoresMes[mes])
+          .then(
+            (resp) => {
+              console.log(resp);
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+      }
+    });
   }
 }

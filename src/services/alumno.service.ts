@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
+import { firstValueFrom } from 'rxjs/internal/firstValueFrom';
 
 @Injectable({
   providedIn: 'root',
@@ -42,62 +43,67 @@ export class AlumnoService {
     }
   }
 
-  // NUEVO  ///////////////////////////////////  ///////////////////////////////////  /////////////////////////////////// NUEVO //
+  actualizarMontoMes(id: string, mes: string, monto: number): Promise<any> {
+    const updateData: any = {};
+    updateData[`mes${mes}`] = monto;
+    return this.firestore.collection('alumnos').doc(id).update(updateData);
+  }
 
-  moverAlumnoABajas(id: string): Promise<void> {
+  actualizarMontoInscripcion(id: string, monto: number): Promise<any> {
     return this.firestore
       .collection('alumnos')
       .doc(id)
-      .get()
-      .toPromise()
-      .then((docSnapshot) => {
-        // Asegúrate de que el documento existe y tiene datos antes de proceder
-        if (docSnapshot?.exists) {
-          const data = docSnapshot.data();
-          if (data) {
-            // Asegúrate de que hay datos para copiar
-            return this.firestore
-              .collection('bajas')
-              .doc(id)
-              .set(data)
-              .then(() => {
-                return this.eliminarAlumno(id); // Elimina el documento de la colección original
-              });
-          }
-        }
-        throw new Error('Documento no encontrado o sin datos');
-      })
-      .catch((error) => {
-        console.error('Error al mover el alumno:', error);
-        throw error; // Propaga el error para manejo adicional si es necesario
-      });
+      .update({ montoInsc: monto });
   }
 
-  devolverAlumnos(id: string): Promise<void> {
-    return this.firestore
-      .collection('bajas')
-      .doc(id)
-      .get()
-      .toPromise()
-      .then((docSnapshot) => {
-        if (docSnapshot?.exists) {
-          const data = docSnapshot.data();
-          if (data) {
-            return this.firestore
-              .collection('alumnos')
-              .doc(id)
-              .set(data)
-              .then(() => {
-                return this.firestore.collection('bajas').doc(id).delete();
-              });
-          }
+  async moverAlumnoABajas(id: string): Promise<void> {
+    try {
+      const alumnosCollection = this.firestore.collection('alumnos');
+      const bajasCollection = this.firestore.collection('bajas');
+
+      const docSnapshot$ = alumnosCollection.doc(id).get();
+
+      const docSnapshot = await firstValueFrom(docSnapshot$);
+
+      if (docSnapshot.exists) {
+        const data = docSnapshot.data();
+        if (data) {
+          await bajasCollection.doc(id).set(data);
+          await this.eliminarAlumno(id);
+          return;
         }
-        throw new Error('Documento no encontrado');
-      })
-      .catch((error) => {
-        console.error('Error al devolver el alumno:', error);
-        throw error; // Propagar el error para manejo adicional si es necesario
-      });
+      }
+
+      throw new Error('Documento no encontrado o sin datos');
+    } catch (error) {
+      console.error('Error al mover el alumno:', error);
+      throw error;
+    }
+  }
+
+  async devolverAlumnos(id: string): Promise<void> {
+    try {
+      const bajasCollection = this.firestore.collection('bajas');
+      const alumnosCollection = this.firestore.collection('alumnos');
+
+      const docSnapshot$ = bajasCollection.doc(id).get();
+
+      const docSnapshot = await firstValueFrom(docSnapshot$);
+
+      if (docSnapshot.exists) {
+        const data = docSnapshot.data();
+        if (data) {
+          await alumnosCollection.doc(id).set(data);
+          await bajasCollection.doc(id).delete();
+          return;
+        }
+      }
+
+      throw new Error('Documento no encontrado');
+    } catch (error) {
+      console.error('Error al devolver el alumno:', error);
+      throw error;
+    }
   }
 
   getBajasAlumnos(): Observable<any> {
@@ -106,5 +112,16 @@ export class AlumnoService {
       .snapshotChanges();
   }
 
-  // NUEVO  ///////////////////////////////////  ///////////////////////////////////  /////////////////////////////////// NUEVO //
+  actualizarComprobanteEnviado(
+    id: string,
+    tipo: string,
+    enviado: boolean
+  ): Promise<void> {
+    return this.firestore
+      .collection('alumnos')
+      .doc(id)
+      .update({
+        [`comprobantesEnviados.${tipo}`]: enviado,
+      });
+  }
 }

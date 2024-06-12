@@ -18,7 +18,8 @@
 .card-body {
   display: flex;
   align-items: center;
-  background: var(--border-gradient-onyx);
+  /* background: var(--border-gradient-onyx); */
+  background-color: rgba(0, 0, 0, 0.711);
   padding: 20px;
   border-radius: 14px;
   box-shadow: var(--shadow-2);
@@ -36,6 +37,7 @@
 .dynamic-title {
   font-size: 22px;
   font-weight: bold;
+  text-transform: uppercase;
   padding: 5px 9.5%;
   color: rgb(255, 255, 255);
   line-height: 1.5;

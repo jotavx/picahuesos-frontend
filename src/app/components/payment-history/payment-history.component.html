@@ -15,6 +15,7 @@
         <input matInput (keyup)="applyFilter($event)" placeholder="" #input>
       </mat-form-field>
       <mat-tab-group (selectedTabChange)="filtrarPorCategoria($event.tab.textLabel)" #tabGroup>
+
         <mat-tab label="Mosquitos" value="Mosquitos"></mat-tab>
         <mat-tab label="PMM" value="PMM"></mat-tab>
         <mat-tab label="PreMini" value="PreMini"></mat-tab>
@@ -23,26 +24,33 @@
         <mat-tab label="U15" value="U15"></mat-tab>
         <mat-tab label="U17" value="U17"></mat-tab>
         <mat-tab label="Primera" value="Primera"></mat-tab>
+        <mat-tab label="Todos" value="Todos"></mat-tab>
       </mat-tab-group>
 
       <div class="mat-elevation-z8">
         <table mat-table id="table-data" class="table table-striped" [dataSource]="dataSource" matSort>
 
           <ng-container matColumnDef="nombreCompleto" sticky>
+
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre Completo </th>
-            <td mat-cell *matCellDef="let row">
-              <p class="name-center fw-bold"> <span
-                  matTooltip="Fecha de Creación: {{row.fechaCreacion.toDate() | date: 'dd/MM/yyyy'}} Última Actualización: {{row.fechaActualizacion.toDate() | date: 'dd/MM/yyyy'}}">
-                  <i class="fas fa-info-circle me-2" style="color: rgb(10, 118, 15); "></i>
-                </span> {{row.nombre}}</p>
+            <td mat-cell *matCellDef="let row" class="fw-bold">
+
+              <!-- matTooltip="Fecha de Creación: {{row.fechaCreacion.toDate() | date: 'dd/MM/yyyy'}} Última Actualización:
+              {{row.fechaActualizacion.toDate() | date: 'dd/MM/yyyy'}} - Categoria: {{row.categoria}}">
+              <i class="fas fa-info-circle me-2" style="color: rgb(10, 118, 15); "></i> -->
+
+              <span class="name">
+                {{row.nombre}}
+              </span>
             </td>
           </ng-container>
 
           <ng-container matColumnDef="montoInsc">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Monto Inscripción </th>
-            <td mat-cell *matCellDef="let row"> {{row.montoInsc}} - <br> <small
-                class="fw-bold">{{row.fechaMontoInsc?.toDate() | date:
-                'dd/MM'}} </small></td>
+            <td mat-cell *matCellDef="let row"> {{row.montoInsc}} <p class="fw-bold text-success">
+                {{formatFecha(row.fechaMontoInsc)}}</p>
+            </td>
+
           </ng-container>
 
           <ng-container matColumnDef="mesMarzo">
@@ -103,7 +111,7 @@
             <td class="mat-cell" colspan="4">No hay datos que coincidan con el filtro:"{{input.value}}"</td>
           </tr>
         </table>
-        <mat-paginator [pageSizeOptions]="[10, 25, 100, 500]" aria-label="Select page of users"></mat-paginator>
+        <mat-paginator [pageSizeOptions]="[50, 100, 300]" aria-label="Select page of users"></mat-paginator>
       </div>
     </div>
   </div>

@@ -1,20 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlumnoService } from 'src/services/alumno.service';
-
-interface CategoriaTotal {
-  categoria: string;
-  totalMP: number;
-  totalE: number;
-  totalSinEspecificar: number;
-}
-
-interface DatosMensuales {
-  [key: string]: {
-    categorias: CategoriaTotal[];
-    totalGeneral: number;
-  };
-}
+import { CategoriaTotal } from 'src/app/models/categoria-total.model';
+import { DatosMensuales } from 'src/app/models/datos-mensuales.model';
 
 @Component({
   selector: 'app-cierre-de-caja',
@@ -23,13 +11,16 @@ interface DatosMensuales {
 })
 export class CierreDeCajaComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
+
   displayedColumns: string[] = [
     'categoria',
     'totalMP',
     'totalE',
     'totalSinEspecificar',
   ];
+
   alumnos: any[] = [];
+
   categorias = [
     'Mosquitos',
     'PMM',
@@ -40,6 +31,7 @@ export class CierreDeCajaComponent implements OnInit {
     'U17',
     'Primera',
   ];
+
   meses = [
     { clave: 'mesMarzo', nombre: 'Marzo', num: 3 },
     { clave: 'mesAbril', nombre: 'Abril', num: 4 },
@@ -52,9 +44,11 @@ export class CierreDeCajaComponent implements OnInit {
     { clave: 'mesNoviembre', nombre: 'Noviembre', num: 11 },
     { clave: 'mesDiciembre', nombre: 'Diciembre', num: 12 },
   ];
+
   datosMensuales: DatosMensuales = {};
 
   totalInscripcion: number = 0;
+
   datosInscripcionesMensuales: { [key: string]: number } = {};
 
   constructor(private _alumnoService: AlumnoService) {}
@@ -148,7 +142,13 @@ export class CierreDeCajaComponent implements OnInit {
     this.alumnos.forEach((alumno) => {
       const montoInsc = this.parseCurrency(alumno.montoInsc);
       if (alumno.fechaMontoInsc) {
-        const fecha = new Date(alumno.fechaMontoInsc.seconds * 1000);
+        let fecha;
+        if (alumno.fechaMontoInsc.seconds) {
+          fecha = new Date(alumno.fechaMontoInsc.seconds * 1000); // Si es timestamp
+        } else {
+          fecha = new Date(alumno.fechaMontoInsc); // Si es ISO
+        }
+
         const mes = fecha.getMonth() + 1;
         const claveMes = `mes${mes}`;
 

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { LogoutDialogComponent } from '../logout-dialog/logout-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { ReminderDialogComponent } from '../reminder-dialog/reminder-dialog.component';
 
 @Component({
   selector: 'app-navbar',

@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SeleccionAlumnosDialogComponent } from '../seleccion-alumnos-dialog/seleccion-alumnos-dialog.component';
 import { UserService } from 'src/services/user.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Alumno } from 'src/app/models/alumno.model';
 
 @Component({
   selector: 'app-envio-email-dialog',
@@ -28,7 +29,7 @@ export class EnvioEmailDialogComponent {
   listaCorreosPrimera: string = '';
   listaCorreos: string = '';
 
-  alumnos: any[] = []; // Array para almacenar datos de alumnos.
+  alumnos: Alumno[] = []; // Array para almacenar datos de alumnos.
   datosCorreo: FormGroup; //Define un formulario reactivo con validaciones para correo, asunto, y mensaje.
   loading = false; //Indicador de carga
 
@@ -40,7 +41,7 @@ export class EnvioEmailDialogComponent {
     private dialog: MatDialog,
     private userService: UserService,
     public dialogRef: MatDialogRef<EnvioEmailDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: Alumno
   ) {
     this.datosCorreo = new FormGroup({
       correo: new FormControl('', Validators.email),
@@ -168,7 +169,6 @@ export class EnvioEmailDialogComponent {
             'Mensaje Enviado',
             { positionClass: 'toast-bottom-right' }
           );
-          this.dialogRef.close();
         } else {
           // Mostrar un mensaje de error si ok: false o no hay respuesta
           this.toastr.error('Hubo un error al enviar el mensaje', 'Error', {
@@ -185,6 +185,7 @@ export class EnvioEmailDialogComponent {
         this.loading = false;
       }
     );
+    this.dialogRef.close();
   }
 
   //Abre un diálogo para seleccionar alumnos específicos, y actualiza la lista de correos seleccionados una vez que el diálogo se cierra.

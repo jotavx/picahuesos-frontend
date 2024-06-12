@@ -3,11 +3,11 @@
   width: 100%;
   justify-content: center;
   /* background-color: #212529; */
-  background-color: rgba(0, 0, 0, 0.102);
+  background-color: rgba(0, 0, 0, 0.616);
 }
 
 .navbar {
-  background-color: rgba(0, 0, 0, 0.102);
+  background-color: rgba(0, 0, 0, 0.616);
 }
 
 .panel.active {

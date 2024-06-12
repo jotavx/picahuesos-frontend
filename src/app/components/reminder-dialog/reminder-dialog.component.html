@@ -11,6 +11,7 @@
     <input type="text" class="form-control" placeholder="Ingrese un título" formControlName="reminderTitle">
     <label class="form-label mt-2 "><small class="fw-bold ">Fecha</small> <small class="text-danger">*</small></label>
     <input type="date" class="form-control" placeholder="Ingrese una fecha " formControlName="reminderDate">
+    <br>
     <label class="form-label mt-2 "><small class="fw-bold ">Descripción</small> <small
         class="text-danger">*</small></label>
     <textarea class="form-control non-resizable-textarea" maxlength="90" rows="
@@ -19,10 +20,7 @@
     <div class="descripcionControl float-end">
       {{ createReminder.get('reminderDescription')?.value?.length ?? 0 }} / 90
     </div>
-    <!-- <br><br>
-    <button mat-raised-button color="primary" type=" submit" class="float-end mt-2 "
-      (click)="buildOrEditReminder()">Aceptar</button>
-    <button mat-raised-button color="accent" class=" float-end mx-2 mt-2" (click)="closeDialog()">Volver</button> -->
+
   </form>
 
 </mat-dialog-content>

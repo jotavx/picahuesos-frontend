@@ -1,7 +1,9 @@
 <!-- <nav class="navbar navbar-dark bg-dark"> -->
+<app-offline-message></app-offline-message>
 <nav class="navbar">
   <div class="container-fluid">
-    <a class="navbar-brand no-select ms-3">Picahuesos</a>
+    <span class="navbar-brand no-select ms-3"><img src="../../../assets/ico.png" alt="" height="90px"
+        width="90px"></span>
     <button mat-raised-button color="warn" (click)="openDialog()" class=" logout float-end mx-2 fw-bold">Cerrar
       Sesión</button>
 
@@ -12,9 +14,6 @@
   <button mat-stroked-button color="accent" class="mt-2 mx-2 panel fw-bold custom-button " routerLink="/home"
     routerLinkActive="active"><small><i class="fa-solid fa-house"></i>
       Inicio</small></button>
-  <!-- <button mat-stroked-button color="accent" class="mt-2 mx-2 panel fw-bold custom-button " routerLink="/envio-email"
-    routerLinkActive="active"><small><i class="fa-solid fa-envelope"></i> Envio de
-      Email</small></button> -->
   <button mat-stroked-button color="accent" class="mt-2 mx-2 panel fw-bold custom-button " routerLink="/historial-pagos"
     routerLinkActive="active"><small><i class="fa-solid fa-landmark"></i> Historial
       de

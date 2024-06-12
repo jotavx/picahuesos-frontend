@@ -1,0 +1,9 @@
+/* offline-message.component.css */
+.offline-message {
+  display: flex;
+  justify-content: center;
+  background-color: rgb(92, 9, 9);
+  color: white;
+  font-weight: bold;
+  height: 3vh;
+}
