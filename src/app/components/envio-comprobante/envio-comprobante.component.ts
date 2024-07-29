@@ -28,6 +28,8 @@ export class EnvioComprobanteComponent implements OnInit {
   mesesSeleccionados: { [mes: string]: boolean } = {};
   comprobantesEnviados: ComprobantesEnviados = { inscripcion: false };
   incluyeInscripcion: boolean = false;
+  mesAbonado: string = '';
+  mesAbonadoGuardado: boolean = false;
 
   meses = [
     'Marzo',
@@ -56,6 +58,7 @@ export class EnvioComprobanteComponent implements OnInit {
       const alumno = resultado.payload.data();
       this.alumnoNombre = alumno.nombre;
       this.alumnoEmail = alumno.email;
+      this.mesAbonado = alumno.mesAbonado || '';
       this.inscripcion = alumno.montoInsc;
       this.comprobantesEnviados = alumno.comprobantesEnviados || {
         inscripcion: false,
@@ -67,6 +70,23 @@ export class EnvioComprobanteComponent implements OnInit {
           this.comprobantesEnviados[mes] || false;
       });
     });
+  }
+
+  actualizarMesAbonado(mesAbonado: string): void {
+    this.alumnoService.actualizarMesAbonado(this.data.id, mesAbonado).then(
+      () => {
+        this.mesAbonadoGuardado = true;
+      },
+      (error) => {
+        this.toastr.error(
+          `Error al actualizar el mes abonado.`,
+          'Error de Actualización',
+          {
+            positionClass: 'toast-bottom-right',
+          }
+        );
+      }
+    );
   }
 
   /////////////////////////////////////// NEW

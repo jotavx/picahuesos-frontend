@@ -15,7 +15,7 @@ export class BajasComponent {
   bajasAlumnos: Alumno[] = []; //Un arreglo que almacenará los datos de alumnos que han sido dados de baja.
   displayedColumns: string[] = [
     'acciones',
-    'nombreCompleto',
+    'nombre',
     'dni',
     'fechaNacimiento',
     'categoria',

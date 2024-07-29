@@ -30,7 +30,7 @@ export class ListAlumnosComponent implements OnInit {
   alumnos: Alumno[] = []; // Array que almacena la información de los alumnos.
   displayedColumns: string[] = [
     'acciones',
-    'nombreCompleto',
+    'nombre',
     'mesAbonado',
     'dni',
     'fechaNacimiento',
@@ -38,10 +38,12 @@ export class ListAlumnosComponent implements OnInit {
     'direccion',
     'email',
     'seguroAltaBaja',
+    'aptoMedico',
     'telefono',
     'tutoresResponsables',
     'permisoImagen',
     'seRetiraSolo',
+    'quienRetira',
   ]; // Columnas a mostrar en la tabla.
   dataSource = new MatTableDataSource<Alumno>(); // Instancia de MatTableDataSource.
   selectedAlumnos: Set<string> = new Set<string>();
@@ -132,6 +134,8 @@ export class ListAlumnosComponent implements OnInit {
         'Tutores Responsables': alumno.tutoresResponsables,
         'Permiso de imagen': alumno.permisoImagen,
         'Se retira solx': alumno.seRetiraSolo,
+        'Quien Retira': alumno.quienRetira,
+        'Apto Medico': alumno.aptoMedico,
       }))
     );
 

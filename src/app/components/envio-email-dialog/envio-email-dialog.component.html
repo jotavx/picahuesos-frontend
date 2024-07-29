@@ -4,7 +4,7 @@
     <div class="card-body">
       <form [formGroup]="datosCorreo">
 
-        <mat-form-field appearance="fill">
+        <!-- <mat-form-field appearance="fill">
           <mat-label>Lista destinatarios</mat-label>
           <mat-select (selectionChange)="seleccionarDestinatarios($event.value)">
             <mat-option disabled selected>Seleccionar destinatarios</mat-option>
@@ -18,7 +18,8 @@
             <mat-option value="U17">U17</mat-option>
             <mat-option value="Primera">Primera</mat-option>
           </mat-select>
-        </mat-form-field>
+        </mat-form-field> -->
+
         <button mat-raised-button color="primary" class="ms-3 mb-3" (click)="abrirDialogoSeleccionAlumnos()">Elegir
           destinatario</button>
         <button mat-raised-button color="accent" class="ms-3 mb-3" (click)="limpiarEmails()">Limpiar emails</button>

@@ -20,13 +20,15 @@ import { ToastrService } from 'ngx-toastr';
 export class CreateAlumnComponent implements OnInit {
   categorias = [
     'Mosquitos',
-    'PMM',
+    'Piojitos',
+    'Mini1',
     'PreMini',
-    'Mini',
+    'Mini2',
     'U13',
     'U15',
     'U17',
     'Primera',
+    'Basquet-Silla',
   ]; //Define las categorías existentes para su selección en el formulario
 
   titulo = 'Agregar Alumno/a'; // Define un titulo para que sea dinámico, si es editar el titulo sera otro
@@ -71,6 +73,8 @@ export class CreateAlumnComponent implements OnInit {
       observacionesAlumno: [''],
       permisoImagen: [''],
       seRetiraSolo: [''],
+      quienRetira: [''],
+      aptoMedico: [''],
     });
 
     this.id = this.aRoute.snapshot.paramMap.get('id');
@@ -149,6 +153,7 @@ export class CreateAlumnComponent implements OnInit {
       categoria: this.createAlumno.value.categoria,
       mesAbonado: this.createAlumno.value.mesAbonado,
       seguroAltaBaja: this.createAlumno.value.seguroAltaBaja,
+      aptoMedico: this.createAlumno.value.aptoMedico,
       montoInsc: this.createAlumno.value.montoInsc,
       fechaMontoInsc: this.createAlumno.value.fechaMontoInsc || fechaActual,
       mesMarzo: this.createAlumno.value.mesMarzo,
@@ -165,6 +170,7 @@ export class CreateAlumnComponent implements OnInit {
       observacionesAlumno: this.createAlumno.value.observacionesAlumno,
       permisoImagen: this.createAlumno.value.permisoImagen,
       seRetiraSolo: this.createAlumno.value.seRetiraSolo,
+      quienRetira: this.createAlumno.value.quienRetira,
       fechaCreacion: new Date(),
       fechaActualizacion: new Date(),
     };
@@ -199,6 +205,7 @@ export class CreateAlumnComponent implements OnInit {
       categoria: this.createAlumno.value.categoria,
       mesAbonado: this.createAlumno.value.mesAbonado,
       seguroAltaBaja: this.createAlumno.value.seguroAltaBaja,
+      aptoMedico: this.createAlumno.value.aptoMedico,
       montoInsc: this.createAlumno.value.montoInsc,
       fechaMontoInsc: this.createAlumno.value.fechaMontoInsc || fechaActual,
       mesMarzo: this.createAlumno.value.mesMarzo,
@@ -215,6 +222,7 @@ export class CreateAlumnComponent implements OnInit {
       observacionesAlumno: this.createAlumno.value.observacionesAlumno,
       permisoImagen: this.createAlumno.value.permisoImagen,
       seRetiraSolo: this.createAlumno.value.seRetiraSolo,
+      quienRetira: this.createAlumno.value.quienRetira,
       fechaActualizacion: new Date(),
     };
     this.loading = true;
@@ -239,36 +247,37 @@ export class CreateAlumnComponent implements OnInit {
   esEditar() {
     if (this.data) {
       this.createAlumno.setValue({
-        nombre: this.data.nombre,
-        fechaNacimiento: this.data.fechaNacimiento,
-        dni: this.data.dni,
-        email: this.data.email,
-        direccion: this.data.direccion,
-        telefono: this.data.telefono,
-        categoria: this.data.categoria,
-        mesAbonado: this.data.mesAbonado,
-        seguroAltaBaja: this.data.seguroAltaBaja,
-        montoInsc: this.data.montoInsc,
-        fechaMontoInsc: this.data.fechaMontoInsc,
-        mesMarzo: this.data.mesMarzo,
-        mesAbril: this.data.mesAbril,
-        mesMayo: this.data.mesMayo,
-        mesJunio: this.data.mesJunio,
-        mesJulio: this.data.mesJulio,
-        mesAgosto: this.data.mesAgosto,
-        mesSeptiembre: this.data.mesSeptiembre,
-        mesOctubre: this.data.mesOctubre,
-        mesNoviembre: this.data.mesNoviembre,
-        mesDiciembre: this.data.mesDiciembre,
-        tutoresResponsables: this.data.tutoresResponsables,
-        observacionesAlumno: this.data.observacionesAlumno,
-        permisoImagen: this.data.permisoImagen,
-        seRetiraSolo: this.data.seRetiraSolo,
+        nombre: this.data.nombre || '',
+        fechaNacimiento: this.data.fechaNacimiento || '',
+        dni: this.data.dni || '',
+        email: this.data.email || '',
+        direccion: this.data.direccion || '',
+        telefono: this.data.telefono || '',
+        categoria: this.data.categoria || '',
+        mesAbonado: this.data.mesAbonado || '',
+        seguroAltaBaja: this.data.seguroAltaBaja || '',
+        montoInsc: this.data.montoInsc || '',
+        fechaMontoInsc: this.data.fechaMontoInsc || '',
+        mesMarzo: this.data.mesMarzo || '',
+        mesAbril: this.data.mesAbril || '',
+        mesMayo: this.data.mesMayo || '',
+        mesJunio: this.data.mesJunio || '',
+        mesJulio: this.data.mesJulio || '',
+        mesAgosto: this.data.mesAgosto || '',
+        mesSeptiembre: this.data.mesSeptiembre || '',
+        mesOctubre: this.data.mesOctubre || '',
+        mesNoviembre: this.data.mesNoviembre || '',
+        mesDiciembre: this.data.mesDiciembre || '',
+        tutoresResponsables: this.data.tutoresResponsables || '',
+        observacionesAlumno: this.data.observacionesAlumno || '',
+        permisoImagen: this.data.permisoImagen || '',
+        seRetiraSolo: this.data.seRetiraSolo || '',
+        quienRetira: this.data.quienRetira || '',
+        aptoMedico: this.data.aptoMedico || '',
       });
       this.titulo = 'Editar Alumno/a';
     }
   }
-
   //Evita que el formulario se envíe accidentalmente al presionar Enter.
   onKeydown(event: KeyboardEvent) {
     if (event.key === 'Enter') {

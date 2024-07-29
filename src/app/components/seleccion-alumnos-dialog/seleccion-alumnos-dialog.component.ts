@@ -18,7 +18,8 @@ export class SeleccionAlumnosDialogComponent implements OnInit {
   alumnos: Alumno[] = [];
   displayedColumns: string[] = [
     'seleccionar',
-    'nombreCompleto',
+    'nombre',
+    'categoria',
     'email',
     'mesAbonado',
   ];

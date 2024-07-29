@@ -19,7 +19,7 @@ export class PaymentHistoryComponent implements OnInit, AfterViewInit {
   alumnos: Alumno[] = [];
 
   displayedColumns: string[] = [
-    'nombreCompleto',
+    'nombre',
     'montoInsc',
     'mesMarzo',
     'mesAbril',

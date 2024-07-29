@@ -25,6 +25,8 @@ export interface Alumno {
   observacionesAlumno: string;
   permisoImagen: string;
   seRetiraSolo: string;
+  quienRetira: string;
+  aptoMedico: string;
 
   comprobantesEnviados: {
     inscripcion: false;

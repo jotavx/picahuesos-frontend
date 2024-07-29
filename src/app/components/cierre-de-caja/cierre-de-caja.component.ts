@@ -23,13 +23,15 @@ export class CierreDeCajaComponent implements OnInit {
 
   categorias = [
     'Mosquitos',
-    'PMM',
+    'Piojitos',
+    'Mini1',
     'PreMini',
-    'Mini',
+    'Mini2',
     'U13',
     'U15',
     'U17',
     'Primera',
+    'Basquet-Silla',
   ];
 
   meses = [

@@ -7,13 +7,15 @@
     <mat-tab-group (selectedTabChange)="filtrarPorCategoria($event.tab.textLabel)">
       <mat-tab label="Todos" value="Todos"></mat-tab>
       <mat-tab label="Mosquitos" value="Mosquitos"></mat-tab>
-      <mat-tab label="PMM" value="PMM"></mat-tab>
+      <mat-tab label="Piojitos" value="Piojitos"></mat-tab>
+      <mat-tab label="Mini1" value="Mini1"></mat-tab>
       <mat-tab label="PreMini" value="PreMini"></mat-tab>
-      <mat-tab label="Mini" value="Mini"></mat-tab>
+      <mat-tab label="Mini2" value="Mini2"></mat-tab>
       <mat-tab label="U13" value="U13"></mat-tab>
       <mat-tab label="U15" value="U15"></mat-tab>
       <mat-tab label="U17" value="U17"></mat-tab>
       <mat-tab label="Primera" value="Primera"></mat-tab>
+      <mat-tab label="Basquet-Silla" value="Basquet-Silla"></mat-tab>
     </mat-tab-group>
     <table class="table table-striped" mat-table [dataSource]="dataSource" matSort>
 
@@ -24,7 +26,7 @@
         </td>
       </ng-container>
 
-      <ng-container matColumnDef="nombreCompleto">
+      <ng-container matColumnDef="nombre">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre Completo </th>
         <td mat-cell class="fw-bold name" *matCellDef="let row"> {{row.nombre}} </td>
       </ng-container>

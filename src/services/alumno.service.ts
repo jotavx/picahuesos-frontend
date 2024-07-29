@@ -124,4 +124,8 @@ export class AlumnoService {
         [`comprobantesEnviados.${tipo}`]: enviado,
       });
   }
+
+  actualizarMesAbonado(id: string, mesAbonado: string): Promise<void> {
+    return this.firestore.collection('alumnos').doc(id).update({ mesAbonado });
+  }
 }

@@ -40,7 +40,7 @@
         <button mat-icon-button (click)="actualizarMontoMes(mes, valoresMes[mes])">
           <mat-icon>save</mat-icon>
         </button>
-        <mat-icon *ngIf="mesGuardado[mes]" style="color: rgb(6, 93, 6);">check</mat-icon>
+        <mat-icon *ngIf="mesGuardado[mes]" class="text-success fw-bold" matTooltip="Guardado">check</mat-icon>
 
       </div>
       <small *ngIf="mesesSeleccionados[mes] && !valoresMes[mes]" class="text-danger sin-valor">
@@ -50,7 +50,24 @@
   </div>
 </mat-dialog-content>
 
-<mat-dialog-actions align="end">
-  <button mat-raised-button color="accent" mat-dialog-close class="mt-3">Volver</button>
-  <button mat-raised-button color="primary" (click)="enviarCorreoComprobante()" class="mt-3">Enviar Comprobante</button>
+<mat-dialog-actions class="border-top" align="end">
+
+  <span class="fw-bold text-center">Mes Abonado:</span>
+  <div class="d-flex align-items-center">
+    <!-- Campo de entrada HTML estándar de tipo date -->
+    <input type="date" [(ngModel)]="mesAbonado" class="form-control form-control-lg mt-1 mes-abonado"
+      style="width: auto; display: inline-block; margin-right: 10px; font-weight: bold;">
+    <button mat-icon-button (click)="actualizarMesAbonado(mesAbonado)">
+      <mat-icon>save</mat-icon>
+    </button>
+    <mat-icon *ngIf="mesAbonadoGuardado" class="text-success fw-bold" matTooltip="Guardado">check</mat-icon>
+  </div>
+
+  <br>
+
+  <div class="flex">
+    <button mat-raised-button color="accent" mat-dialog-close class="mt-3">Volver</button>
+    <button mat-raised-button color="primary" (click)="enviarCorreoComprobante()" class="mt-3">Enviar
+      Comprobante</button>
+  </div>
 </mat-dialog-actions>
